@@ -1,6 +1,6 @@
 <?php
 
-namespace WebAnyOne\MauticPrestashopBundle;
+namespace MauticPlugin\WebAnyOne\MauticPrestashopBundle;
 
 use Mautic\IntegrationsBundle\Bundle\AbstractPluginBundle;
 
