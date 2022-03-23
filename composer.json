@@ -8,7 +8,7 @@
     "integration"
   ],
   "extra": {
-    "install-directory-name": "WebAnyOne/MauticPrestashopBundle"
+    "install-directory-name": "WebAnyOneMauticPrestashopBundle"
   },
   "minimum-stability": "dev",
   "require": {
