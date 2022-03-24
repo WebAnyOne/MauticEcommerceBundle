@@ -1,13 +1,14 @@
 <?php
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle;
+namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ConfigFormType extends \Symfony\Component\Form\AbstractType
+class ConfigFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

@@ -5,7 +5,14 @@ return [
     'description' => 'Retrieve data from Prestashop',
     'version' => '0.1',
     'author' => 'elao',
-    'routes' => [],
+    'routes' => [
+        'public' => [
+            'plugin_webanyone_prestashop_test' => array(
+                'path'       => '/test',
+                'controller' => 'WebAnyOneMauticPrestashopBundle:Prestashop:test',
+            ),
+        ]
+    ],
     'services' => [
         'other'        => [
             // Provides access to configured API keys, settings, field mapping, etc
