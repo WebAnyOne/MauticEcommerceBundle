@@ -15,9 +15,9 @@ class PrestashopController extends CommonController
         $integrationsHelper = $this->get('mautic.integrations.helper');
 
         /** @var PrestashopIntegration $integration */
-        $integration = $integrationsHelper->getIntegration('Prestashop');
+        $integration = $integrationsHelper->getIntegration(PrestashopIntegration::NAME);
 
-        var_dump($integration->makeRequest('/customers'));
+        var_dump($integration->makeRequest('/carts'));
 
         return new Response('<body></body>');
     }
