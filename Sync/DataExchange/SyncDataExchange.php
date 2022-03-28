@@ -21,7 +21,6 @@ class SyncDataExchange implements SyncDataExchangeInterface
 
     public function getSyncReport(RequestDAO $requestDAO): ReportDAO
     {
-        dump('get sync');
         return $this->reportBuilder->build(
             $requestDAO->getSyncIteration(),
             $requestDAO->getObjects(),

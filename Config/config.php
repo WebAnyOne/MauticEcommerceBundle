@@ -11,10 +11,10 @@ return [
     'author' => 'elao',
     'routes' => [
         'public' => [
-            'plugin_webanyone_prestashop_test' => array(
-                'path'       => '/test',
-                'controller' => 'WebAnyOneMauticPrestashopBundle:Prestashop:test',
-            ),
+//            'plugin_webanyone_prestashop_test' => array(
+//                'path'       => '/test',
+//                'controller' => 'WebAnyOneMauticPrestashopBundle:Prestashop:test',
+//            ),
         ]
     ],
     'services' => [

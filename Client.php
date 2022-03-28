@@ -3,10 +3,14 @@
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle;
 
 use GuzzleHttp\Psr7\Utils;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Serializer;
 
 class Client implements ClientInterface
 {
     private \GuzzleHttp\Client $httpClient;
+
+    private Serializer $serializer;
 
     public function __construct(string $url, string $token)
     {
@@ -14,19 +18,26 @@ class Client implements ClientInterface
         $uri = $uri->withUserInfo($token);
 
         $this->httpClient = new \GuzzleHttp\Client(['base_uri' => $uri]);
+
+        $this->decoder = new XmlEncoder();
     }
 
-    public function getCustomers(int $page, int $limit = 100): array
+    public function getCustomers(int $page, int $limit = 10): array
     {
         $offset = ($page - 1) * $limit;
 
-            $response = $this->httpClient->get(
-                'customers?sort=[date_add_DESC]&date=1&display=full&lmit=' . $offset . ',' . $limit
-            );
+        $response = $this->httpClient->get(
+            'customers',
+            [
+                'query' => [
+                    'display' => 'full',
+                    'limit' => $offset . ',' . $limit,
+                ]
+            ]
+        );
 
-            dump(new \SimpleXMLElement($response->getBody()->getContents()));
-//         dd($response->getBody()->getContents());
+        $data = $this->decoder->decode($response->getBody()->getContents(), XmlEncoder::FORMAT);
 
-         return [];
+        return $data['customers']['customer'] ?? [];
     }
 }

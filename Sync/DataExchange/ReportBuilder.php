@@ -49,7 +49,6 @@ class ReportBuilder
 
     public function build(int $page, array $requestedObjects, InputOptionsDAO $options): ReportDAO
     {
-        dump('build', func_get_args());
         $client = $this->clientFactory->getClient();
 
         // Set the options this integration supports (see InputOptionsDAO for others)
@@ -59,15 +58,10 @@ class ReportBuilder
         $this->report = new ReportDAO(PrestashopIntegration::NAME);
 
         foreach ($requestedObjects as $requestedObject) {
-            dump($requestedObject);
             $objectName = $requestedObject->getObject();
             // Fetch a list of changed objects from the integration's API
 
-dump($objectName);
-            $customers = $client->getCustomers($page);
-            // todo retrieve customer from the api
-dump($customers);
-            $modifiedItems = [];
+            $modifiedItems = $client->getCustomers($page);
 
             // Add the modified items to the report
             $this->addModifiedItems($objectName, $modifiedItems);
@@ -81,17 +75,16 @@ dump($customers);
         // Get the the field list to know what the field types are
         $fields       = $this->fieldRepository->getFields($objectName);
         $mappedFields = $this->config->getMappedFields($objectName);
-
         foreach ($changeList as $item) {
             $objectDAO = new ReportObjectDAO(
                 $objectName,
                 // Set the ID from the integration
                 $item['id'],
                 // Set the date/time when the full object was last modified or created
-                new \DateTime(!empty($item['last_modified_timestamp']) ? $item['last_modified_timestamp'] : $item['created_timestamp'])
+                new \DateTime(!empty($item['date_upd']) ? $item['date_upd'] : $item['date_add'])
             );
 
-            foreach ($item['fields'] as $fieldAlias => $fieldValue) {
+            foreach ($item as $fieldAlias => $fieldValue) {
                 if (!isset($fields[$fieldAlias]) || !isset($mappedFields[$fieldAlias])) {
                     // Field is not recognized or it's not mapped so ignore
                     continue;

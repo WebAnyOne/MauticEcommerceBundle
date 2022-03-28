@@ -16,18 +16,6 @@ class PrestashopIntegration extends BasicIntegration implements BasicInterface
         return 'plugins/WebAnyOneMauticPrestashopBundle/Assets/img/grapesjsbuilder.png';
     }
 
-    public function makeRequest(string $url)
-    {
-        $config = $this->getIntegrationConfiguration()->getApiKeys();
-
-        $uri = Utils::uriFor(rtrim($config['url'], '/') . '/');
-        $uri = $uri->withUserInfo($config['token']);
-
-        $client = new Client(['base_uri' => $uri]);
-
-        return new \SimpleXMLElement($client->get(ltrim($url, '/'))->getBody()->getContents());
-    }
-
     public function getDisplayName(): string
     {
         return 'WebAnyOne Prestashop';
