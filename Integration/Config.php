@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration;
 
 use Mautic\IntegrationsBundle\Exception\IntegrationNotFoundException;
@@ -40,8 +42,6 @@ class Config
 
     /**
      * Returns mapped fields that the user configured for this integration in the format of [field_alias => mautic_field_alias].
-     *
-     * @param string $objectName
      *
      * @return string[]
      */

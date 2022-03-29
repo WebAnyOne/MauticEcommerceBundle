@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\DataExchange;
 
 use Mautic\IntegrationsBundle\Sync\DAO\Sync\InputOptionsDAO;
 use Mautic\IntegrationsBundle\Sync\DAO\Sync\Report\FieldDAO;
 use Mautic\IntegrationsBundle\Sync\DAO\Sync\Report\ObjectDAO as ReportObjectDAO;
 use Mautic\IntegrationsBundle\Sync\DAO\Sync\Report\ReportDAO;
-use Mautic\IntegrationsBundle\Sync\DAO\Sync\Request\ObjectDAO as RequestObjectDAO;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\ClientFactory;
+use MauticPlugin\WebAnyOneMauticPrestashopBundle\Api\ClientFactory;
 use MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration\Config;
 use MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration\PrestashopIntegration;
 use MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Field\Field;
@@ -37,9 +38,9 @@ class ReportBuilder
 
     private ClientFactory $clientFactory;
 
-    public function __construct(Config $config, FieldRepository $fieldRepository, ClientFactory  $clientFactory)
+    public function __construct(Config $config, FieldRepository $fieldRepository, ClientFactory $clientFactory)
     {
-        $this->config          = $config;
+        $this->config = $config;
         $this->fieldRepository = $fieldRepository;
 
         // Value normalizer transforms value types expected by each side of the sync
@@ -53,7 +54,7 @@ class ReportBuilder
 
         // Set the options this integration supports (see InputOptionsDAO for others)
         $startDateTime = $options->getStartDateTime();
-        $endDateTime   = $options->getEndDateTime();
+        $endDateTime = $options->getEndDateTime();
 
         $this->report = new ReportDAO(PrestashopIntegration::NAME);
 
@@ -73,7 +74,7 @@ class ReportBuilder
     private function addModifiedItems(string $objectName, array $changeList): void
     {
         // Get the the field list to know what the field types are
-        $fields       = $this->fieldRepository->getFields($objectName);
+        $fields = $this->fieldRepository->getFields($objectName);
         $mappedFields = $this->config->getMappedFields($objectName);
         foreach ($changeList as $item) {
             $objectDAO = new ReportObjectDAO(

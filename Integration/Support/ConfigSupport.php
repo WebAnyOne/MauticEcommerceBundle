@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration\Support;
 
 use Mautic\IntegrationsBundle\Integration\DefaultConfigFormTrait;
@@ -8,13 +10,11 @@ use Mautic\IntegrationsBundle\Integration\Interfaces\ConfigFormFeaturesInterface
 use Mautic\IntegrationsBundle\Integration\Interfaces\ConfigFormInterface;
 use Mautic\IntegrationsBundle\Integration\Interfaces\ConfigFormSyncInterface;
 use Mautic\IntegrationsBundle\Mapping\MappedFieldInfoInterface;
+use Mautic\IntegrationsBundle\Sync\SyncDataExchange\Internal\Object\Contact;
 use MauticPlugin\WebAnyOneMauticPrestashopBundle\Form\Type\ConfigFormType;
 use MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration\PrestashopIntegration;
 use MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Field\FieldRepository;
 use MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Manual\MappingManualFactory;
-use Mautic\IntegrationsBundle\Sync\SyncDataExchange\Internal\Object\Company;
-use Mautic\IntegrationsBundle\Sync\SyncDataExchange\Internal\Object\Contact;
-
 
 class ConfigSupport extends PrestashopIntegration implements ConfigFormInterface, ConfigFormAuthInterface, ConfigFormSyncInterface
 {

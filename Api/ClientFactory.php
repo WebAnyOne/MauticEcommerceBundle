@@ -1,6 +1,8 @@
 <?php
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle;
+declare(strict_types=1);
+
+namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Api;
 
 use Mautic\IntegrationsBundle\Helper\IntegrationsHelper;
 use MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration\PrestashopIntegration;

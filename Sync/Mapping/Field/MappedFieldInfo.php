@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Field;
 
 use Mautic\IntegrationsBundle\Mapping\MappedFieldInfoInterface;

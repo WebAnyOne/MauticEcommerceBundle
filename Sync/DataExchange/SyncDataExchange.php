@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\DataExchange;
 
 use Mautic\IntegrationsBundle\Sync\DAO\Sync\Order\OrderDAO;
@@ -16,7 +18,7 @@ class SyncDataExchange implements SyncDataExchangeInterface
 
     public function __construct(ReportBuilder $reportBuilder)
     {
-        $this->reportBuilder    = $reportBuilder;
+        $this->reportBuilder = $reportBuilder;
     }
 
     public function getSyncReport(RequestDAO $requestDAO): ReportDAO

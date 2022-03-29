@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Field;
 
 use Mautic\IntegrationsBundle\Sync\DAO\Mapping\ObjectMappingDAO;
@@ -14,9 +16,9 @@ class Field
 
     public function __construct(array $field = [])
     {
-        $this->name       = $field['name'] ?? '';
-        $this->label      = $field['label'] ?? '';
-        $this->dataType   = $field['data_type'] ?? 'text';
+        $this->name = $field['name'] ?? '';
+        $this->label = $field['label'] ?? '';
+        $this->dataType = $field['data_type'] ?? 'text';
         $this->isRequired = (bool) ($field['required'] ?? false);
         $this->isWritable = (bool) ($field['writable'] ?? true);
     }

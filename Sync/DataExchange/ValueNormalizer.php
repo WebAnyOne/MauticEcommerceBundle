@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\DataExchange;
 
 use Mautic\IntegrationsBundle\Sync\DAO\Value\NormalizedValueDAO;
@@ -7,7 +9,7 @@ use Mautic\IntegrationsBundle\Sync\ValueNormalizer\ValueNormalizerInterface;
 
 class ValueNormalizer implements ValueNormalizerInterface
 {
-    const BOOLEAN_TYPE = 'bool';
+    public const BOOLEAN_TYPE = 'bool';
 
     public function normalizeForIntegration(NormalizedValueDAO $value)
     {

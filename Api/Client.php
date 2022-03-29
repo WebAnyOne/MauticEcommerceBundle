@@ -1,6 +1,8 @@
 <?php
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle;
+declare(strict_types=1);
+
+namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Api;
 
 use GuzzleHttp\Psr7\Utils;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -32,7 +34,7 @@ class Client implements ClientInterface
                 'query' => [
                     'display' => 'full',
                     'limit' => $offset . ',' . $limit,
-                ]
+                ],
             ]
         );
 

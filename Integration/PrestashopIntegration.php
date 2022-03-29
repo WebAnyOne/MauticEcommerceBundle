@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Utils;
 use Mautic\IntegrationsBundle\Integration\BasicIntegration;
 use Mautic\IntegrationsBundle\Integration\Interfaces\BasicInterface;
 

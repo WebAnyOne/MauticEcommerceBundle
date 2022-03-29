@@ -1,11 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Field;
 
 use Mautic\CoreBundle\Helper\CacheStorageHelper;
+use MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Manual\MappingManualFactory;
 
 class FieldRepository
 {
+    private static $fields = [
+        MappingManualFactory::CUSTOMER_OBJECT => [
+            ['name' => 'id', 'label' => 'ID', 'data_type' => 'text', 'required' => true, 'writable' => false],
+            ['name' => 'lastname', 'label' => 'Last Name', 'data_type' => 'text', 'required' => true, 'writable' => false],
+            ['name' => 'firstname', 'label' => 'First Name', 'data_type' => 'text', 'required' => true, 'writable' => false],
+            ['name' => 'email', 'label' => 'Email', 'data_type' => 'text', 'required' => true, 'writable' => false],
+            ['name' => 'date_add', 'label' => 'Date add', 'data_type' => 'datetime', 'required' => true, 'writable' => false],
+            ['name' => 'date_upd', 'label' => 'Date update', 'data_type' => 'datetime', 'required' => true, 'writable' => false],
+        ],
+    ];
     /**
      * @var CacheStorageHelper
      */
@@ -29,7 +42,7 @@ class FieldRepository
     public function getFields(string $objectName): array
     {
         $cacheKey = $this->getCacheKey($objectName);
-        $fields   = $this->cacheProvider->get($cacheKey);
+        $fields = $this->cacheProvider->get($cacheKey);
 
         if (!$fields) {
             // Fields are empty or not found so refresh from the API
@@ -44,7 +57,7 @@ class FieldRepository
      */
     public function getRequiredFieldsForMapping(string $objectName): array
     {
-        $fields       = $this->getFieldsFromApi($objectName);
+        $fields = $this->getFieldsFromApi($objectName);
         $fieldObjects = $this->hydrateFieldObjects($fields);
 
         $requiredFields = [];
@@ -65,7 +78,7 @@ class FieldRepository
      */
     public function getOptionalFieldsForMapping(string $objectName): array
     {
-        $fields       = $this->getFieldsFromApi($objectName);
+        $fields = $this->getFieldsFromApi($objectName);
         $fieldObjects = $this->hydrateFieldObjects($fields);
 
         $optionalFields = [];
@@ -93,14 +106,7 @@ class FieldRepository
         // todo retrieve a list of fields for a given objectName
         // [{name, label, data_type, required, writable}]
 
-        $fields = [
-            ['name' => 'id', 'label' => 'ID', 'data_type' => 'text', 'required' => true, 'writable' => false],
-            ['name' => 'lastname', 'label' => 'Last Name', 'data_type' => 'text', 'required' => true, 'writable' => false],
-            ['name' => 'firstname', 'label' => 'First Name', 'data_type' => 'text', 'required' => true, 'writable' => false],
-            ['name' => 'email', 'label' => 'Email', 'data_type' => 'text', 'required' => true, 'writable' => false],
-            ['name' => 'date_add', 'label' => 'Date add', 'data_type' => 'datetime', 'required' => true, 'writable' => false],
-            ['name' => 'date_upd', 'label' => 'Date update', 'data_type' => 'datetime', 'required' => true, 'writable' => false],
-        ];
+        $fields = self::$fields[$objectName];
 
         // Refresh the cache with the fields just fetched
         $cacheKey = $this->getCacheKey($objectName);

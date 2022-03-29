@@ -1,6 +1,8 @@
 <?php
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle;
+declare(strict_types=1);
+
+namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Api;
 
 interface ClientInterface
 {

@@ -10,10 +10,29 @@
   "extra": {
     "install-directory-name": "WebAnyOneMauticPrestashopBundle"
   },
+  "autoload": {
+    "psr-4": {
+      "MauticPlugin\\WebAnyOneMauticPrestashopBundle\\": ""
+    }
+  },
   "minimum-stability": "dev",
   "require": {
     "php": ">=7.4.0 <8.1",
-    "mautic/core-lib": "^3.2|^4.0",
+    "mautic/core-lib": "^4.0",
     "symfony/serializer": ">=4.4"
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/dennisameling/FOSOAuthServerBundle.git"
+    }
+  ],
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "*"
+  },
+  "config": {
+    "allow-plugins": {
+      "symfony/flex": true
+    }
   }
 }

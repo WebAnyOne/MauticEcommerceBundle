@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Manual;
 
 use Mautic\IntegrationsBundle\Exception\InvalidValueException;
@@ -34,7 +36,7 @@ class MappingManualFactory
     public function __construct(FieldRepository $fieldRepository, Config $config)
     {
         $this->fieldRepository = $fieldRepository;
-        $this->config          = $config;
+        $this->config = $config;
     }
 
     public function getManual(): MappingManualDAO
