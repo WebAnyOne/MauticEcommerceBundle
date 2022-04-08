@@ -10,26 +10,53 @@ class Transaction
 
     private string $id;
     private \DateTimeImmutable $date;
-    private int $price;
+    private int $priceWithoutTaxes;
     private int $priceWithTaxes;
     private int $nbProducts;
-    private $stat;
 
     public function __construct(
         $contact,
         string $id,
         \DateTimeImmutable $date,
-        int $price,
+        int $priceWithoutTaxes,
         int $priceWithTaxes,
-        int $nbProducts,
-        $stat
+        int $nbProducts
     ) {
         $this->contact = $contact;
         $this->id = $id;
         $this->date = $date;
-        $this->price = $price;
+        $this->priceWithoutTaxes = $priceWithoutTaxes;
         $this->priceWithTaxes = $priceWithTaxes;
         $this->nbProducts = $nbProducts;
-        $this->stat = $stat;
+    }
+
+    public function getContact()
+    {
+        return $this->contact;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getDate(): \DateTimeImmutable
+    {
+        return $this->date;
+    }
+
+    public function getPriceWithoutTaxes(): int
+    {
+        return $this->priceWithoutTaxes;
+    }
+
+    public function getPriceWithTaxes(): int
+    {
+        return $this->priceWithTaxes;
+    }
+
+    public function getNbProducts(): int
+    {
+        return $this->nbProducts;
     }
 }

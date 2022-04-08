@@ -98,5 +98,13 @@ return [
                 ],
             ],
         ],
+        'events' => [
+            'webanyone.prestashop.subscriber.lead' => [
+                'class' => \MauticPlugin\WebAnyOneMauticPrestashopBundle\EventListener\LeadSubscriber::class,
+                'arguments' => [
+                    'mautic.lead.provider.typeOperator',
+                ]
+            ]
+        ]
     ],
 ];

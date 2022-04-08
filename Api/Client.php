@@ -5,14 +5,10 @@ declare(strict_types=1);
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Api;
 
 use GuzzleHttp\Psr7\Utils;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Serializer;
 
 class Client implements ClientInterface
 {
     private \GuzzleHttp\Client $httpClient;
-
-    private Serializer $serializer;
 
     public function __construct(string $url, string $token)
     {
@@ -20,8 +16,6 @@ class Client implements ClientInterface
         $uri = $uri->withUserInfo($token);
 
         $this->httpClient = new \GuzzleHttp\Client(['base_uri' => $uri]);
-
-        $this->decoder = new XmlEncoder();
     }
 
     public function getCustomers(int $page, int $limit = 10): array
@@ -34,12 +28,31 @@ class Client implements ClientInterface
                 'query' => [
                     'display' => 'full',
                     'limit' => $offset . ',' . $limit,
+                    'output_format' => 'JSON'
                 ],
             ]
         );
 
-        $data = $this->decoder->decode($response->getBody()->getContents(), XmlEncoder::FORMAT);
+        $data = json_decode($response->getBody()->getContents(), true);
 
-        return $data['customers']['customer'] ?? [];
+        return $data['customers'] ?? [];
+    }
+
+    public function getOrders(int $page, int $limit = 100): array
+    {
+        $offset = ($page - 1) * $limit;
+
+        $response = $this->httpClient->get(
+            'orders',
+            [
+                'query' => [
+                    'display' => 'full',
+                    'limit' => $offset . ',' . $limit,
+                    'output_format' => 'JSON'
+                ],
+            ]
+        );
+
+        $data = json_decode($response->getBody()->getContents(), true);
     }
 }

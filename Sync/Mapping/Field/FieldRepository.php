@@ -5,18 +5,62 @@ declare(strict_types=1);
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Field;
 
 use Mautic\CoreBundle\Helper\CacheStorageHelper;
+use Mautic\IntegrationsBundle\Sync\DAO\Value\NormalizedValueDAO;
 use MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Manual\MappingManualFactory;
 
 class FieldRepository
 {
     private static $fields = [
         MappingManualFactory::CUSTOMER_OBJECT => [
-            ['name' => 'id', 'label' => 'ID', 'data_type' => 'text', 'required' => true, 'writable' => false],
-            ['name' => 'lastname', 'label' => 'Last Name', 'data_type' => 'text', 'required' => true, 'writable' => false],
-            ['name' => 'firstname', 'label' => 'First Name', 'data_type' => 'text', 'required' => true, 'writable' => false],
-            ['name' => 'email', 'label' => 'Email', 'data_type' => 'text', 'required' => true, 'writable' => false],
-            ['name' => 'date_add', 'label' => 'Date add', 'data_type' => 'datetime', 'required' => true, 'writable' => false],
-            ['name' => 'date_upd', 'label' => 'Date update', 'data_type' => 'datetime', 'required' => true, 'writable' => false],
+            [
+                'name' => 'id',
+                'label' => 'ID',
+                'data_type' => NormalizedValueDAO::STRING_TYPE,
+                'required' => true,
+                'writable' => false,
+            ],
+            [
+                'name' => 'lastname',
+                'label' => 'Last Name',
+                'data_type' => NormalizedValueDAO::STRING_TYPE,
+                'required' => true,
+                'writable' => false,
+            ],
+            [
+                'name' => 'firstname',
+                'label' => 'First Name',
+                'data_type' => NormalizedValueDAO::STRING_TYPE,
+                'required' => true,
+                'writable' => false,
+            ],
+            [
+                'name' => 'email',
+                'label' => 'Email',
+                'data_type' => NormalizedValueDAO::STRING_TYPE,
+                'required' => true,
+                'writable' => false,
+            ],
+            [
+                'name' => 'birthday',
+                'label' => 'Birthday',
+                'data_type' => NormalizedValueDAO::DATE_TYPE,
+                'required' => true,
+                'writable' => false,
+            ],
+            [
+                'name' => 'date_add',
+                'label' => 'Date add',
+                'data_type' => NormalizedValueDAO::DATETIME_TYPE,
+                'required' => true,
+                'writable' => false,
+            ],
+            [
+                'name' => 'date_upd',
+                'label' => 'Date update',
+                'data_type' => NormalizedValueDAO::DATETIME_TYPE,
+                'required' => true,
+                'writable' => false,
+            ],
         ],
     ];
     /**
