@@ -28,7 +28,7 @@ class Client implements ClientInterface
                 'query' => [
                     'display' => 'full',
                     'limit' => $offset . ',' . $limit,
-                    'output_format' => 'JSON'
+                    'output_format' => 'JSON',
                 ],
             ]
         );
@@ -48,7 +48,7 @@ class Client implements ClientInterface
                 'query' => [
                     'display' => 'full',
                     'limit' => $offset . ',' . $limit,
-                    'output_format' => 'JSON'
+                    'output_format' => 'JSON',
                 ],
             ]
         );

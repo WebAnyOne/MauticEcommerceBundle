@@ -35,7 +35,7 @@ return [
                     'webanyone_prestashop.sync.client_factory',
                     'mautic.integrations.repository.object_mapping',
                     'webanyone_prestashop.repository.transaction',
-                    'doctrine'
+                    'doctrine',
                 ],
                 'tags' => [
                     'console.command',
@@ -44,9 +44,9 @@ return [
             'webanyone_prestashop.repository.transaction' => [
                 'class' => \MauticPlugin\WebAnyOneMauticPrestashopBundle\Entity\TransactionRepository::class,
                 'arguments' => [
-                    'doctrine'
-                ]
-            ]
+                    'doctrine',
+                ],
+            ],
         ],
         'sync' => [
             'webanyone_prestashop.sync.client_factory' => [
@@ -122,8 +122,8 @@ return [
                 'class' => \MauticPlugin\WebAnyOneMauticPrestashopBundle\EventListener\LeadListSubscriber::class,
                 'arguments' => [
                     'mautic.lead.provider.typeOperator',
-                ]
-            ]
-        ]
+                ],
+            ],
+        ],
     ],
 ];

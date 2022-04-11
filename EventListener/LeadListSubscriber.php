@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\EventListener;
 
 use Mautic\LeadBundle\Event\LeadListFiltersChoicesEvent;
@@ -23,7 +25,7 @@ class LeadListSubscriber implements EventSubscriberInterface
     {
         return [
             LeadEvents::LIST_FILTERS_CHOICES_ON_GENERATE => 'onGenerateSegmentFiltersAddTransactionFields',
-            LeadEvents::SEGMENT_DICTIONARY_ON_GENERATE => 'onGenerateSegmentDictionary'
+            LeadEvents::SEGMENT_DICTIONARY_ON_GENERATE => 'onGenerateSegmentDictionary',
         ];
     }
 
@@ -39,8 +41,8 @@ class LeadListSubscriber implements EventSubscriberInterface
                 OperatorOptions::GREATER_THAN,
                 OperatorOptions::LESS_THAN,
                 OperatorOptions::GREATER_THAN_OR_EQUAL,
-                OperatorOptions::LESS_THAN_OR_EQUAL
-            ])
+                OperatorOptions::LESS_THAN_OR_EQUAL,
+            ]),
         ]);
     }
 
@@ -49,7 +51,7 @@ class LeadListSubscriber implements EventSubscriberInterface
         $event->addTranslation('lead_order_date', [
             'type' => ForeignValueFilterQueryBuilder::getServiceId(),
             'foreign_table' => 'transactions',
-            'field' => 'date'
+            'field' => 'date',
         ]);
     }
 }

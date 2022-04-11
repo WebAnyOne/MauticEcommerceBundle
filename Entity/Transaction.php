@@ -104,9 +104,9 @@ class Transaction
             $leadId,
             $order['id'],
             new \DateTimeImmutable($order['date_add']),
-            (int) ((float)$order['total_paid_tax_excl'] * 100),
-            (int) ((float)$order['total_paid_tax_incl'] * 100),
-            count($order['associations']['order_rows'])
+            (int) ((float) $order['total_paid_tax_excl'] * 100),
+            (int) ((float) $order['total_paid_tax_incl'] * 100),
+            \count($order['associations']['order_rows'])
         );
     }
 }

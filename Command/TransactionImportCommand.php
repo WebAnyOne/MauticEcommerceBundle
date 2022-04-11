@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Command;
 
 use Mautic\IntegrationsBundle\Entity\ObjectMappingRepository;
@@ -53,17 +55,7 @@ class TransactionImportCommand extends Command
 
             $entityManager->flush();
             $entityManager->clear();
-        } while (count($orders) > 0);
-
-        // on récupère toute les commandes depuis l'api
-        // pour chacune on doit créer une transaction et la lié a un lead
-            // comment on fait pour trouver le bon lead ?
-                // L'info est dans la table sync_object_mapping
-                // mais si l'objet n'existe pas ? -> on peut commencer par ignorer la transaction et elle sera présente le prochain couo
-                // il n'y a pas un objet pour faire ça ?
-                // \Mautic\IntegrationsBundle\Entity\ObjectMappingRepository::getInternalObject('Prestashop', 'customer', $customerId, 'lead')
-
-        // Comment on gère la mise à jour ?
+        } while (\count($orders) > 0);
 
         return 1;
     }
