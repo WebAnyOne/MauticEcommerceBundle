@@ -7,6 +7,7 @@ use Mautic\LeadBundle\Event\SegmentDictionaryGenerationEvent;
 use Mautic\LeadBundle\LeadEvents;
 use Mautic\LeadBundle\Provider\TypeOperatorProviderInterface;
 use Mautic\LeadBundle\Segment\OperatorOptions;
+use Mautic\LeadBundle\Segment\Query\Filter\ForeignValueFilterQueryBuilder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class LeadSubscriber implements EventSubscriberInterface
@@ -28,7 +29,7 @@ class LeadSubscriber implements EventSubscriberInterface
 
     public function onGenerateSegmentFiltersAddTransactionFields(LeadListFiltersChoicesEvent $event): void
     {
-        $event->addChoice('lead', 'order_date', [
+        $event->addChoice('lead', 'lead_order_date', [
             'label' => 'Date de dernière commande',
             'object' => 'lead',
             'properties' => ['type' => 'date'],
@@ -45,6 +46,10 @@ class LeadSubscriber implements EventSubscriberInterface
 
     public function onGenerateSegmentDictionary(SegmentDictionaryGenerationEvent $event): void
     {
-        $event->addTranslation('lead_order_date', []);
+        $event->addTranslation('lead_order_date', [
+            'type' => ForeignValueFilterQueryBuilder::getServiceId(),
+            'foreign_table' => 'transactions',
+            'field' => 'date'
+        ]);
     }
 }

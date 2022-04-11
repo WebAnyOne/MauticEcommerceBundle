@@ -4,25 +4,55 @@ declare(strict_types=1);
 
 namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="transactions")
+ */
 class Transaction
 {
-    private $contact;
+    /**
+     * @ORM\Column(type="integer", nullable=false, name="lead_id")
+     */
+    private $leadId;
 
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
     private string $id;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=false)
+     */
     private \DateTimeImmutable $date;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     private int $priceWithoutTaxes;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     private int $priceWithTaxes;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     private int $nbProducts;
 
     public function __construct(
-        $contact,
+        $leadId,
         string $id,
         \DateTimeImmutable $date,
         int $priceWithoutTaxes,
         int $priceWithTaxes,
         int $nbProducts
     ) {
-        $this->contact = $contact;
+        $this->leadId = $leadId;
         $this->id = $id;
         $this->date = $date;
         $this->priceWithoutTaxes = $priceWithoutTaxes;
