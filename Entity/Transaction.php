@@ -22,7 +22,7 @@ class Transaction
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private string $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=false)
@@ -46,7 +46,7 @@ class Transaction
 
     public function __construct(
         $leadId,
-        string $id,
+        int $id,
         \DateTimeImmutable $date,
         int $priceWithoutTaxes,
         int $priceWithTaxes,
@@ -60,12 +60,12 @@ class Transaction
         $this->nbProducts = $nbProducts;
     }
 
-    public function getContact()
+    public function getLeadId()
     {
-        return $this->contact;
+        return $this->leadId;
     }
 
-    public function getId(): string
+    public function getId(): int
     {
         return $this->id;
     }
@@ -88,5 +88,25 @@ class Transaction
     public function getNbProducts(): int
     {
         return $this->nbProducts;
+    }
+
+    public function update(Transaction $transaction): void
+    {
+        $this->date = $transaction->date;
+        $this->priceWithoutTaxes = $transaction->priceWithoutTaxes;
+        $this->priceWithTaxes = $transaction->priceWithTaxes;
+        $this->nbProducts = $transaction->nbProducts;
+    }
+
+    public static function fromOrderArray(string $leadId, array $order): self
+    {
+        return new self(
+            $leadId,
+            $order['id'],
+            new \DateTimeImmutable($order['date_add']),
+            (int) ((float)$order['total_paid_tax_excl'] * 100),
+            (int) ((float)$order['total_paid_tax_incl'] * 100),
+            count($order['associations']['order_rows'])
+        );
     }
 }

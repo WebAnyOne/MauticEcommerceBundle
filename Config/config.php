@@ -28,6 +28,25 @@ return [
                     'mautic.integrations.helper',
                 ],
             ],
+
+            'webanyone_prestashop.command.transaction_import' => [
+                'class' => \MauticPlugin\WebAnyOneMauticPrestashopBundle\Command\TransactionImportCommand::class,
+                'arguments' => [
+                    'webanyone_prestashop.sync.client_factory',
+                    'mautic.integrations.repository.object_mapping',
+                    'webanyone_prestashop.repository.transaction',
+                    'doctrine'
+                ],
+                'tags' => [
+                    'console.command',
+                ],
+            ],
+            'webanyone_prestashop.repository.transaction' => [
+                'class' => \MauticPlugin\WebAnyOneMauticPrestashopBundle\Entity\TransactionRepository::class,
+                'arguments' => [
+                    'doctrine'
+                ]
+            ]
         ],
         'sync' => [
             'webanyone_prestashop.sync.client_factory' => [
@@ -100,7 +119,7 @@ return [
         ],
         'events' => [
             'webanyone.prestashop.subscriber.lead' => [
-                'class' => \MauticPlugin\WebAnyOneMauticPrestashopBundle\EventListener\LeadSubscriber::class,
+                'class' => \MauticPlugin\WebAnyOneMauticPrestashopBundle\EventListener\LeadListSubscriber::class,
                 'arguments' => [
                     'mautic.lead.provider.typeOperator',
                 ]

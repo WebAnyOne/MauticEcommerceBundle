@@ -10,7 +10,7 @@ use Mautic\LeadBundle\Segment\OperatorOptions;
 use Mautic\LeadBundle\Segment\Query\Filter\ForeignValueFilterQueryBuilder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class LeadSubscriber implements EventSubscriberInterface
+class LeadListSubscriber implements EventSubscriberInterface
 {
     private TypeOperatorProviderInterface $typeOperatorProvider;
 

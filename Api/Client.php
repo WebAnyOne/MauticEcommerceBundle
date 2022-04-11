@@ -53,6 +53,6 @@ class Client implements ClientInterface
             ]
         );
 
-        $data = json_decode($response->getBody()->getContents(), true);
+        return json_decode($response->getBody()->getContents(), true)['orders'] ?? [];
     }
 }
