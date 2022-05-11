@@ -14,8 +14,6 @@ class Version_0_2_0 extends AbstractMigration
      */
     protected function isApplicable(Schema $schema): bool
     {
-        var_dump('migration ?');
-
         return !$schema->hasTable('transactions');
     }
 

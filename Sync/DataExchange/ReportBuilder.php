@@ -14,6 +14,7 @@ use MauticPlugin\MauticEcommerceBundle\Model\Customer;
 use MauticPlugin\MauticEcommerceBundle\Sync\Config;
 use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Field\Field;
 use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Field\FieldRepository;
+use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Manual\MappingManualFactory;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -71,7 +72,14 @@ class ReportBuilder
             $objectName = $requestedObject->getObject();
             // Fetch a list of changed objects from the integration's API
 
-            $modifiedItems = $client->getCustomers($page);
+            switch ($objectName) {
+                case MappingManualFactory::CUSTOMER_OBJECT:
+                    $modifiedItems = $client->getCustomers($page);
+                    break;
+                case MappingManualFactory::PRODUCT_OBJECT:
+                    $modifiedItems = $client->getProducts($page);
+                    break;
+            }
 
             // Add the modified items to the report
             $this->addModifiedItems($objectName, $modifiedItems);

@@ -10,12 +10,14 @@ use Mautic\IntegrationsBundle\Sync\DAO\Mapping\MappingManualDAO;
 use Mautic\IntegrationsBundle\Sync\DAO\Mapping\ObjectMappingDAO;
 use Mautic\IntegrationsBundle\Sync\SyncDataExchange\Internal\Object\Contact;
 use MauticPlugin\MauticEcommerceBundle\Integration\EcommerceAbstractIntegration;
+use MauticPlugin\MauticEcommerceBundle\Sync\DataExchange\Internal\Product;
 use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Field\Field;
 use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Field\FieldRepository;
 
 class MappingManualFactory
 {
     public const CUSTOMER_OBJECT = 'customer';
+    public const PRODUCT_OBJECT = 'product';
 
     /**
      * @var FieldRepository
@@ -44,6 +46,7 @@ class MappingManualFactory
         $this->manual = new MappingManualDAO($integrationName);
 
         $this->configureObjectMapping($integrationName, self::CUSTOMER_OBJECT);
+        $this->configureObjectMapping($integrationName, self::PRODUCT_OBJECT);
 
         return $this->manual;
     }
@@ -92,6 +95,8 @@ class MappingManualFactory
         switch ($objectName) {
             case self::CUSTOMER_OBJECT:
                 return Contact::NAME;
+            case self::PRODUCT_OBJECT:
+                return Product::NAME;
         }
 
         throw new InvalidValueException("$objectName could not be mapped to a Mautic object");

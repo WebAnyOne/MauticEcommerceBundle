@@ -1,6 +1,6 @@
 {
   "name": "webanyone/mautic-ecommerce-bundle",
-  "description": "WebAnyOne MauticPrestashopBundle",
+  "description": "MauticEcommerceBundle",
   "type": "mautic-plugin",
   "keywords": [
     "mautic",

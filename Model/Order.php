@@ -17,8 +17,8 @@ class Order
         int $id,
         int $customerId,
         \DateTimeImmutable $date,
-        float $priceWithoutTaxes,
-        float $priceWithTaxes,
+        int $priceWithoutTaxes,
+        int $priceWithTaxes,
         int $nbProducts
     ) {
         $this->id = $id;

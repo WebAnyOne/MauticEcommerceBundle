@@ -14,8 +14,6 @@ class ValueNormalizer implements ValueNormalizerInterface
 
     public function normalizeForIntegration(NormalizedValueDAO $value)
     {
-        // @todo handle date fields ?
-
         switch ($value->getType()) {
             case NormalizedValueDAO::BOOLEAN_TYPE:
                 // Integration requires actual boolean

@@ -11,8 +11,10 @@ use MauticPlugin\MauticEcommerceBundle\Api\ClientInterface;
 use MauticPlugin\MauticEcommerceBundle\Integration\WooCommerceIntegration;
 use MauticPlugin\MauticEcommerceBundle\Model\Customer;
 use MauticPlugin\MauticEcommerceBundle\Model\Order;
+use MauticPlugin\MauticEcommerceBundle\Model\Product;
 use MauticPlugin\MauticEcommerceBundle\WooCommerce\Normalizer\CustomerNormalizer;
 use MauticPlugin\MauticEcommerceBundle\WooCommerce\Normalizer\OrderNormalizer;
+use MauticPlugin\MauticEcommerceBundle\WooCommerce\Normalizer\ProductNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
@@ -43,14 +45,20 @@ class Client implements ClientInterface
         ]);
 
         $this->serializer = new Serializer(
-            [new ArrayDenormalizer(), new DateTimeNormalizer(), new CustomerNormalizer(), new OrderNormalizer()],
+            [
+                new ArrayDenormalizer(),
+                new DateTimeNormalizer(),
+                new CustomerNormalizer(),
+                new OrderNormalizer(),
+                new ProductNormalizer(),
+            ],
             [new JsonEncoder()]
         );
     }
 
     public function getCustomers(int $page, int $limit = 100): array
     {
-        $response = $this->httpClient->get('orders', ['query' => [
+        $response = $this->httpClient->get('customers', ['query' => [
             'page' => $page,
             'per_page' => $limit,
             'orderby' => 'id',
@@ -75,6 +83,22 @@ class Client implements ClientInterface
         return $this->serializer->deserialize(
             $response->getBody()->getContents(),
             Order::class . '[]',
+            JsonEncoder::FORMAT,
+            ['integration' => WooCommerceIntegration::NAME]
+        );
+    }
+
+    public function getProducts(int $page, int $limit = 100): array
+    {
+        $response = $this->httpClient->get('products', ['query' => [
+            'page' => $page,
+            'per_page' => $limit,
+            'orderby' => 'id',
+        ]]);
+
+        return $this->serializer->deserialize(
+            $response->getBody()->getContents(),
+            Product::class . '[]',
             JsonEncoder::FORMAT,
             ['integration' => WooCommerceIntegration::NAME]
         );

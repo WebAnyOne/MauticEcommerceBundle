@@ -55,6 +55,43 @@ class FieldRepository
                 'writable' => false,
             ],
         ],
+        MappingManualFactory::PRODUCT_OBJECT => [
+            [
+                'name' => 'id',
+                'label' => 'ID',
+                'data_type' => NormalizedValueDAO::STRING_TYPE,
+                'required' => true,
+                'writable' => false,
+            ],
+            [
+                'name' => 'name',
+                'label' => 'Name',
+                'data_type' => NormalizedValueDAO::STRING_TYPE,
+                'required' => true,
+                'writable' => false,
+            ],
+            [
+                'name' => 'unitPrice',
+                'label' => 'Unit Price',
+                'data_type' => NormalizedValueDAO::INT_TYPE,
+                'required' => true,
+                'writable' => false,
+            ],
+            [
+                'name' => 'createdAt',
+                'label' => 'Date add',
+                'data_type' => NormalizedValueDAO::DATETIME_TYPE,
+                'required' => true,
+                'writable' => false,
+            ],
+            [
+                'name' => 'updatedAt',
+                'label' => 'Date update',
+                'data_type' => NormalizedValueDAO::DATETIME_TYPE,
+                'required' => true,
+                'writable' => false,
+            ],
+        ],
     ];
     /**
      * @var CacheStorageHelper
