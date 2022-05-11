@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Field;
+namespace MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Field;
 
 use Mautic\IntegrationsBundle\Sync\DAO\Mapping\ObjectMappingDAO;
 

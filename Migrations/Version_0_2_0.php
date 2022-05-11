@@ -1,6 +1,8 @@
 <?php
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Migrations;
+declare(strict_types=1);
+
+namespace MauticPlugin\MauticEcommerceBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Mautic\IntegrationsBundle\Migration\AbstractMigration;
@@ -8,16 +10,17 @@ use Mautic\IntegrationsBundle\Migration\AbstractMigration;
 class Version_0_2_0 extends AbstractMigration
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function isApplicable(Schema $schema): bool
     {
         var_dump('migration ?');
+
         return !$schema->hasTable('transactions');
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function up(): void
     {

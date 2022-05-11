@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\DataExchange;
+namespace MauticPlugin\MauticEcommerceBundle\Sync\DataExchange;
 
 use Mautic\IntegrationsBundle\Sync\DAO\Sync\Order\OrderDAO;
 use Mautic\IntegrationsBundle\Sync\DAO\Sync\Report\ReportDAO;

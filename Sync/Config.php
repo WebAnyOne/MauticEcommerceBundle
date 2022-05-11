@@ -2,17 +2,14 @@
 
 declare(strict_types=1);
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration;
+namespace MauticPlugin\MauticEcommerceBundle\Sync;
 
-use Mautic\IntegrationsBundle\Exception\IntegrationNotFoundException;
 use Mautic\IntegrationsBundle\Exception\InvalidValueException;
-use Mautic\IntegrationsBundle\Helper\IntegrationsHelper;
 use Mautic\PluginBundle\Entity\Integration;
+use MauticPlugin\MauticEcommerceBundle\Integration\EcommerceAbstractIntegration;
 
 class Config
 {
-    private IntegrationsHelper $integrationsHelper;
-
     /**
      * @var array[]
      */
@@ -23,9 +20,11 @@ class Config
      */
     private $mappedFields = [];
 
-    public function __construct(IntegrationsHelper $integrationsHelper)
+    private EcommerceAbstractIntegration $integration;
+
+    public function __construct(EcommerceAbstractIntegration $integration)
     {
-        $this->integrationsHelper = $integrationsHelper;
+        $this->integration = $integration;
     }
 
     /**
@@ -66,13 +65,7 @@ class Config
      */
     public function getFeatureSettings(): array
     {
-        try {
-            $integration = $this->getIntegrationEntity();
-
-            return $integration->getFeatureSettings() ?: [];
-        } catch (IntegrationNotFoundException $e) {
-            return [];
-        }
+        return $this->integration->getIntegrationConfiguration()->getFeatureSettings() ?: [];
     }
 
     /**
@@ -94,15 +87,5 @@ class Config
         }
 
         return $this->fieldDirections[$objectName];
-    }
-
-    /**
-     * @throws IntegrationNotFoundException
-     */
-    public function getIntegrationEntity(): Integration
-    {
-        $integrationObject = $this->integrationsHelper->getIntegration(PrestashopIntegration::NAME);
-
-        return $integrationObject->getIntegrationConfiguration();
     }
 }

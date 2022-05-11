@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Entity;
+namespace MauticPlugin\MauticEcommerceBundle\Entity;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

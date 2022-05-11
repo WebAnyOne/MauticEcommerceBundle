@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\EventListener;
+namespace MauticPlugin\MauticEcommerceBundle\EventListener;
 
 use Mautic\LeadBundle\Event\LeadListFiltersChoicesEvent;
 use Mautic\LeadBundle\Event\SegmentDictionaryGenerationEvent;
