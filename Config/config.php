@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use MauticPlugin\MauticEcommerceBundle as Bundle;
+use MauticPlugin\MauticEcommerceBundle\EventListener\LeadUiSubscriber;
 
 return [
     'name' => 'Ecommerce',
@@ -114,6 +115,13 @@ return [
                     '@translator',
                 ],
             ],
+            'mautic_ecommerce.subscriber.ui.lead' => [
+                'class' => LeadUiSubscriber::class,
+                'tag' => 'kernel.event_subscriber',
+                'arguments' => [
+                    'mautic_ecommerce.repository.transaction'
+                ]
+            ]
         ],
         'repositories' => [
             'mautic_ecommerce.repository.transaction' => [

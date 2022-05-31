@@ -46,4 +46,21 @@ class TransactionRepository extends ServiceEntityRepository
 
         return $this->findOneBy(['lead' => $id], ['date' => 'DESC']);
     }
+
+    public function getTransactionsCount(Lead $lead, array $filters = null): int
+    {
+        return $this->count(['leadId' => $lead]);
+    }
+
+    public function getTransactions(Lead $lead, array $filters = null, array $orderBy = null, $page = 1, $limit = 25): array
+    {
+        $queryBuilder = $this->createQueryBuilder('t');
+
+        $queryBuilder
+            ->andWhere('t.leadId = :leadId')
+            ->setParameter('leadId', $lead->getId())
+        ;
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }
