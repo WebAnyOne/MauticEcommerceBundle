@@ -2,23 +2,22 @@
 
 declare(strict_types=1);
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Command;
+namespace MauticPlugin\MauticEcommerceBundle\Command;
 
 use Mautic\IntegrationsBundle\Entity\ObjectMappingRepository;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Api\ClientFactory;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Entity\Transaction;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Entity\TransactionRepository;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration\PrestashopIntegration;
+use Mautic\IntegrationsBundle\Helper\IntegrationsHelper;
+use MauticPlugin\MauticEcommerceBundle\Entity\Transaction;
+use MauticPlugin\MauticEcommerceBundle\Entity\TransactionRepository;
+use MauticPlugin\MauticEcommerceBundle\Model\Order;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class TransactionImportCommand extends Command
 {
-    public static $defaultName = 'webanyone:prestashop:transaction:import';
-
-    private ClientFactory $clientFactory;
+    public static $defaultName = 'ecommerce:transaction:import';
 
     private ObjectMappingRepository $objectMappingRepository;
 
@@ -26,23 +25,36 @@ class TransactionImportCommand extends Command
 
     private TransactionRepository $transactionRepository;
 
+    private IntegrationsHelper $integrationsHelper;
+
     public function __construct(
-        ClientFactory $clientFactory,
+        IntegrationsHelper $integrationsHelper,
         ObjectMappingRepository $objectMappingRepository,
         TransactionRepository $transactionRepository,
         ManagerRegistry $registry
     ) {
         parent::__construct();
-        $this->clientFactory = $clientFactory;
+        $this->integrationsHelper = $integrationsHelper;
         $this->objectMappingRepository = $objectMappingRepository;
         $this->transactionRepository = $transactionRepository;
         $this->registry = $registry;
     }
 
+    protected function configure()
+    {
+        $this
+            ->addArgument('integrationName', InputArgument::REQUIRED)
+        ;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $integrationName = $input->getArgument('integrationName');
+
+        $integration = $this->integrationsHelper->getIntegration($integrationName);
+
         $entityManager = $this->registry->getManager();
-        $client = $this->clientFactory->getClient();
+        $client = $integration->getClient();
 
         $page = 1;
 
@@ -50,7 +62,7 @@ class TransactionImportCommand extends Command
             $orders = $client->getOrders($page++, 10);
 
             foreach ($orders as $order) {
-                $this->processOrder($order);
+                $this->processOrder($integrationName, $order);
             }
 
             $entityManager->flush();
@@ -60,15 +72,20 @@ class TransactionImportCommand extends Command
         return 1;
     }
 
-    private function processOrder(array $order): void
+    private function processOrder(string $integrationName, Order $order): void
     {
         $lead = $this->objectMappingRepository->getInternalObject(
-            PrestashopIntegration::NAME,
+            $integrationName,
             'customer',
-            $order['id_customer'],
+            $order->customerId,
             'lead'
         );
 
-        $this->transactionRepository->createOrUpdate(Transaction::fromOrderArray($lead['internal_object_id'], $order));
+        if ($lead === null) {
+            // no lead found
+            return;
+        }
+
+        $this->transactionRepository->createOrUpdate(Transaction::fromOrder($lead['internal_object_id'], $order));
     }
 }

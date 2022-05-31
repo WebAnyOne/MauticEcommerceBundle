@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Form\Type;
+namespace MauticPlugin\MauticEcommerceBundle\WooCommerce\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,13 +16,14 @@ class ConfigFormType extends AbstractType
     {
         $builder
             ->add('url', UrlType::class, ['attr' => ['class' => 'form-control']])
-            ->add('token', TextType::class, ['attr' => ['class' => 'form-control']])
+            ->add('consumerKey', TextType::class, ['attr' => ['class' => 'form-control']])
+            ->add('consumerSecret', TextType::class, ['attr' => ['class' => 'form-control']])
         ;
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $optionsResolver->setDefaults(
+        $resolver->setDefaults(
             [
                 'integration' => null,
             ]

@@ -2,37 +2,43 @@
 
 declare(strict_types=1);
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration\Support;
+namespace MauticPlugin\MauticEcommerceBundle\Integration;
 
+use Mautic\IntegrationsBundle\Integration\BasicIntegration;
 use Mautic\IntegrationsBundle\Integration\DefaultConfigFormTrait;
+use Mautic\IntegrationsBundle\Integration\Interfaces\BasicInterface;
 use Mautic\IntegrationsBundle\Integration\Interfaces\ConfigFormAuthInterface;
 use Mautic\IntegrationsBundle\Integration\Interfaces\ConfigFormFeaturesInterface;
 use Mautic\IntegrationsBundle\Integration\Interfaces\ConfigFormInterface;
 use Mautic\IntegrationsBundle\Integration\Interfaces\ConfigFormSyncInterface;
+use Mautic\IntegrationsBundle\Integration\Interfaces\SyncInterface;
 use Mautic\IntegrationsBundle\Mapping\MappedFieldInfoInterface;
+use Mautic\IntegrationsBundle\Sync\DAO\Mapping\MappingManualDAO;
 use Mautic\IntegrationsBundle\Sync\SyncDataExchange\Internal\Object\Contact;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Form\Type\ConfigFormType;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration\PrestashopIntegration;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Field\FieldRepository;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Manual\MappingManualFactory;
+use Mautic\IntegrationsBundle\Sync\SyncDataExchange\SyncDataExchangeInterface;
+use MauticPlugin\MauticEcommerceBundle\Sync\Config;
+use MauticPlugin\MauticEcommerceBundle\Sync\DataExchange\SyncDataExchange;
+use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Field\FieldRepository;
+use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Manual\MappingManualFactory;
 
-class ConfigSupport extends PrestashopIntegration implements ConfigFormInterface, ConfigFormAuthInterface, ConfigFormSyncInterface
+abstract class EcommerceAbstractIntegration extends BasicIntegration implements BasicInterface, ConfigFormInterface, ConfigFormAuthInterface, ConfigFormSyncInterface, SyncInterface, EcommerceIntegrationInterface
 {
     use DefaultConfigFormTrait;
 
-    /**
-     * @var FieldRepository
-     */
-    private $fieldRepository;
+    protected FieldRepository $fieldRepository;
+    protected MappingManualFactory $mappingManualFactory;
+    protected SyncDataExchange $syncDataExchange;
 
-    public function __construct(FieldRepository $fieldRepository)
-    {
+    private ?Config $config = null;
+
+    public function __construct(
+        FieldRepository $fieldRepository,
+        MappingManualFactory $mappingManualFactory,
+        SyncDataExchange $syncDataExchange
+    ) {
         $this->fieldRepository = $fieldRepository;
-    }
-
-    public function getAuthConfigFormName(): string
-    {
-        return ConfigFormType::class;
+        $this->mappingManualFactory = $mappingManualFactory;
+        $this->syncDataExchange = $syncDataExchange;
     }
 
     public function getSyncConfigObjects(): array
@@ -92,5 +98,24 @@ class ConfigSupport extends PrestashopIntegration implements ConfigFormInterface
         return [
             ConfigFormFeaturesInterface::FEATURE_SYNC => 'mautic.integration.feature.sync',
         ];
+    }
+
+    public function getMappingManual(): MappingManualDAO
+    {
+        return $this->mappingManualFactory->getManual(static::NAME);
+    }
+
+    public function getSyncDataExchange(): SyncDataExchangeInterface
+    {
+        return $this->syncDataExchange;
+    }
+
+    public function getConfig(): Config
+    {
+        if ($this->config === null) {
+            $this->config = new Config($this);
+        }
+
+        return $this->config;
     }
 }

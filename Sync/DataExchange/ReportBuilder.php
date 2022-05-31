@@ -2,17 +2,20 @@
 
 declare(strict_types=1);
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\DataExchange;
+namespace MauticPlugin\MauticEcommerceBundle\Sync\DataExchange;
 
+use Mautic\IntegrationsBundle\Helper\IntegrationsHelper;
 use Mautic\IntegrationsBundle\Sync\DAO\Sync\InputOptionsDAO;
 use Mautic\IntegrationsBundle\Sync\DAO\Sync\Report\FieldDAO;
 use Mautic\IntegrationsBundle\Sync\DAO\Sync\Report\ObjectDAO as ReportObjectDAO;
 use Mautic\IntegrationsBundle\Sync\DAO\Sync\Report\ReportDAO;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Api\ClientFactory;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration\Config;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration\PrestashopIntegration;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Field\Field;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Field\FieldRepository;
+use MauticPlugin\MauticEcommerceBundle\Integration\EcommerceAbstractIntegration;
+use MauticPlugin\MauticEcommerceBundle\Model\Customer;
+use MauticPlugin\MauticEcommerceBundle\Sync\Config;
+use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Field\Field;
+use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Field\FieldRepository;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class ReportBuilder
 {
@@ -36,27 +39,33 @@ class ReportBuilder
      */
     private $report;
 
-    private ClientFactory $clientFactory;
+    private IntegrationsHelper $integrationsHelper;
 
-    public function __construct(Config $config, FieldRepository $fieldRepository, ClientFactory $clientFactory)
+    private PropertyAccessor $propertyAccessor;
+
+    public function __construct(FieldRepository $fieldRepository, IntegrationsHelper $integrationsHelper)
     {
-        $this->config = $config;
         $this->fieldRepository = $fieldRepository;
 
         // Value normalizer transforms value types expected by each side of the sync
         $this->valueNormalizer = new ValueNormalizer();
-        $this->clientFactory = $clientFactory;
+        $this->integrationsHelper = $integrationsHelper;
+        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
     public function build(int $page, array $requestedObjects, InputOptionsDAO $options): ReportDAO
     {
-        $client = $this->clientFactory->getClient();
+        /** @var EcommerceAbstractIntegration $integration */
+        $integration = $this->integrationsHelper->getIntegration($options->getIntegration());
+
+        $this->config = $integration->getConfig();
+        $client = $integration->getClient();
 
         // Set the options this integration supports (see InputOptionsDAO for others)
         $startDateTime = $options->getStartDateTime();
         $endDateTime = $options->getEndDateTime();
 
-        $this->report = new ReportDAO(PrestashopIntegration::NAME);
+        $this->report = new ReportDAO($options->getIntegration());
 
         foreach ($requestedObjects as $requestedObject) {
             $objectName = $requestedObject->getObject();
@@ -71,38 +80,40 @@ class ReportBuilder
         return $this->report;
     }
 
+    /**
+     * @param Customer[] $changeList
+     */
     private function addModifiedItems(string $objectName, array $changeList): void
     {
         // Get the the field list to know what the field types are
         $fields = $this->fieldRepository->getFields($objectName);
         $mappedFields = $this->config->getMappedFields($objectName);
+        $fieldsToSet = array_intersect(array_keys($mappedFields), array_keys($fields));
+
         foreach ($changeList as $item) {
             $objectDAO = new ReportObjectDAO(
                 $objectName,
                 // Set the ID from the integration
-                $item['id'],
+                $item->id,
                 // Set the date/time when the full object was last modified or created
-                new \DateTime(!empty($item['date_upd']) ? $item['date_upd'] : $item['date_add'])
+                $item->updatedAt
             );
 
-            foreach ($item as $fieldAlias => $fieldValue) {
-                if (!isset($fields[$fieldAlias]) || !isset($mappedFields[$fieldAlias])) {
-                    // Field is not recognized or it's not mapped so ignore
-                    continue;
-                }
-
+            foreach ($fieldsToSet as $property) {
                 /** @var Field $field */
-                $field = $fields[$fieldAlias];
+                $field = $fields[$property];
 
                 // The sync is currently from Integration to Mautic so normalize the values for storage in Mautic
+                $value = $this->propertyAccessor->getValue($item, $property);
+
                 $normalizedValue = $this->valueNormalizer->normalizeForMautic(
-                    $fieldValue,
+                    $value,
                     $field->getDataType()
                 );
 
                 // If the integration supports field level tracking with timestamps, update FieldDAO::setChangeDateTime as well
                 // Note that the field name here is the integration's
-                $objectDAO->addField(new FieldDAO($fieldAlias, $normalizedValue));
+                $objectDAO->addField(new FieldDAO($property, $normalizedValue));
             }
 
             // Add the modified/new item to the report

@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Manual;
+namespace MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Manual;
 
 use Mautic\IntegrationsBundle\Exception\InvalidValueException;
+use Mautic\IntegrationsBundle\Helper\IntegrationsHelper;
 use Mautic\IntegrationsBundle\Sync\DAO\Mapping\MappingManualDAO;
 use Mautic\IntegrationsBundle\Sync\DAO\Mapping\ObjectMappingDAO;
-use Mautic\IntegrationsBundle\Sync\SyncDataExchange\Internal\Object\Company;
 use Mautic\IntegrationsBundle\Sync\SyncDataExchange\Internal\Object\Contact;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration\Config;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Integration\PrestashopIntegration;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Field\Field;
-use MauticPlugin\WebAnyOneMauticPrestashopBundle\Sync\Mapping\Field\FieldRepository;
+use MauticPlugin\MauticEcommerceBundle\Integration\EcommerceAbstractIntegration;
+use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Field\Field;
+use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Field\FieldRepository;
 
 class MappingManualFactory
 {
@@ -24,43 +23,42 @@ class MappingManualFactory
     private $fieldRepository;
 
     /**
-     * @var Config
-     */
-    private $config;
-
-    /**
      * @var MappingManualDAO
      */
     private $manual;
 
-    public function __construct(FieldRepository $fieldRepository, Config $config)
+    private IntegrationsHelper $integrationsHelper;
+
+    public function __construct(FieldRepository $fieldRepository, IntegrationsHelper $integrationsHelper)
     {
         $this->fieldRepository = $fieldRepository;
-        $this->config = $config;
+        $this->integrationsHelper = $integrationsHelper;
     }
 
-    public function getManual(): MappingManualDAO
+    public function getManual(string $integrationName): MappingManualDAO
     {
         if ($this->manual) {
             return $this->manual;
         }
 
-        // Instructions to the sync engine on how to map fields and the direction of data should flow
-        $this->manual = new MappingManualDAO(PrestashopIntegration::NAME);
+        $this->manual = new MappingManualDAO($integrationName);
 
-        // In this case, two objects are supported. Citizen to Mautic Contact and World to Mautic Company.
-        $this->configureObjectMapping(self::CUSTOMER_OBJECT);
+        $this->configureObjectMapping($integrationName, self::CUSTOMER_OBJECT);
 
         return $this->manual;
     }
 
-    private function configureObjectMapping(string $objectName): void
+    private function configureObjectMapping(string $integrationName, string $objectName): void
     {
+        /** @var EcommerceAbstractIntegration $integration */
+        $integration = $this->integrationsHelper->getIntegration($integrationName);
+
         // Get a list of available fields from the integration
         $fields = $this->fieldRepository->getFields($objectName);
 
         // Get a list of fields mapped by the user
-        $mappedFields = $this->config->getMappedFields($objectName);
+        $config = $integration->getConfig();
+        $mappedFields = $config->getMappedFields($objectName);
 
         // Generate an object mapping DAO for the given object. The object must be mapped to a supported Mautic object (i.e. contact or company)
         $objectMappingDAO = new ObjectMappingDAO($this->getMauticObjectName($objectName), $objectName);
@@ -78,7 +76,7 @@ class MappingManualFactory
             $objectMappingDAO->addFieldMapping(
                 $mauticFieldAlias,
                 $fieldAlias,
-                $this->config->getFieldDirection($objectName, $fieldAlias),
+                $config->getFieldDirection($objectName, $fieldAlias),
                 $field->isRequired()
             );
 

@@ -1,25 +1,30 @@
 {
-  "name": "webanyone/mautic-prestashop-bundle",
+  "name": "webanyone/mautic-ecommerce-bundle",
   "description": "WebAnyOne MauticPrestashopBundle",
   "type": "mautic-plugin",
   "keywords": [
     "mautic",
     "plugin",
-    "integration"
+    "integration",
+    "ecommerce"
   ],
   "extra": {
-    "install-directory-name": "WebAnyOneMauticPrestashopBundle"
+    "install-directory-name": "MauticEcommerceBundle"
   },
-  "autoload": {
+  "autoload-dev": {
     "psr-4": {
-      "MauticPlugin\\WebAnyOneMauticPrestashopBundle\\": ""
+      "MauticPlugin\\MauticEcommerceBundle\\": ""
     }
   },
   "minimum-stability": "dev",
   "require": {
     "php": ">=7.4.0 <8.1",
     "mautic/core-lib": "^4.0",
-    "symfony/serializer": ">=4.4"
+    "symfony/serializer": ">=4.4",
+    "guzzlehttp/oauth-subscriber": "^0.5.0"
+  },
+  "conflict": {
+    "guzzlehttp/psr7": ">=2"
   },
   "repositories": [
     {

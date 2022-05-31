@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MauticPlugin\WebAnyOneMauticPrestashopBundle\Entity;
+namespace MauticPlugin\MauticEcommerceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use MauticPlugin\MauticEcommerceBundle\Model\Order;
 
 /**
  * @ORM\Entity
@@ -98,15 +99,15 @@ class Transaction
         $this->nbProducts = $transaction->nbProducts;
     }
 
-    public static function fromOrderArray(string $leadId, array $order): self
+    public static function fromOrder(string $leadId, Order $order): self
     {
         return new self(
             $leadId,
-            $order['id'],
-            new \DateTimeImmutable($order['date_add']),
-            (int) ((float) $order['total_paid_tax_excl'] * 100),
-            (int) ((float) $order['total_paid_tax_incl'] * 100),
-            \count($order['associations']['order_rows'])
+            $order->id,
+            $order->date,
+            $order->priceWithoutTaxes,
+            $order->priceWithTaxes,
+            $order->nbProducts,
         );
     }
 }
