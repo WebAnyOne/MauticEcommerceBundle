@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace MauticPlugin\MauticEcommerceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Mautic\LeadBundle\Entity\Lead;
 use MauticPlugin\MauticEcommerceBundle\Model\Order;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="transactions")
+ * @ORM\Table(name="ecommerce_transaction")
  */
 class Transaction
 {
     /**
-     * @ORM\Column(type="integer", nullable=false, name="lead_id")
+     * @ORM\ManyToOne(targetEntity=Lead::class)
      */
-    private $leadId;
+    private Lead $lead;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
@@ -46,14 +47,14 @@ class Transaction
     private int $nbProducts;
 
     public function __construct(
-        $leadId,
+        Lead $lead,
         int $id,
         \DateTimeImmutable $date,
         int $priceWithoutTaxes,
         int $priceWithTaxes,
         int $nbProducts
     ) {
-        $this->leadId = $leadId;
+        $this->lead = $lead;
         $this->id = $id;
         $this->date = $date;
         $this->priceWithoutTaxes = $priceWithoutTaxes;
@@ -61,9 +62,9 @@ class Transaction
         $this->nbProducts = $nbProducts;
     }
 
-    public function getLeadId()
+    public function getLead()
     {
-        return $this->leadId;
+        return $this->lead;
     }
 
     public function getId(): int
@@ -99,10 +100,10 @@ class Transaction
         $this->nbProducts = $transaction->nbProducts;
     }
 
-    public static function fromOrder(string $leadId, Order $order): self
+    public static function fromOrder(Lead $lead, Order $order): self
     {
         return new self(
-            $leadId,
+            $lead,
             $order->id,
             $order->date,
             $order->priceWithoutTaxes,

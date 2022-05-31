@@ -7,7 +7,7 @@ use MauticPlugin\MauticEcommerceBundle as Bundle;
 return [
     'name' => 'Ecommerce',
     'description' => 'Retrieve data from various ecommerce solutions',
-    'version' => '1.0.0',
+    'version' => '0.0.1',
     'author' => 'elao',
     'services' => [
         'other' => [
@@ -25,6 +25,7 @@ return [
                     'mautic.integrations.helper',
                     'mautic.integrations.repository.object_mapping',
                     'mautic_ecommerce.repository.transaction',
+                    'mautic.lead.repository.lead',
                     'doctrine',
                 ],
                 'tag' => 'console.command',

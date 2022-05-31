@@ -6,6 +6,7 @@ namespace MauticPlugin\MauticEcommerceBundle\Command;
 
 use Mautic\IntegrationsBundle\Entity\ObjectMappingRepository;
 use Mautic\IntegrationsBundle\Helper\IntegrationsHelper;
+use Mautic\LeadBundle\Entity\LeadRepository;
 use MauticPlugin\MauticEcommerceBundle\Entity\Transaction;
 use MauticPlugin\MauticEcommerceBundle\Entity\TransactionRepository;
 use MauticPlugin\MauticEcommerceBundle\Model\Order;
@@ -27,10 +28,13 @@ class TransactionImportCommand extends Command
 
     private IntegrationsHelper $integrationsHelper;
 
+    private LeadRepository $leadRepository;
+
     public function __construct(
         IntegrationsHelper $integrationsHelper,
         ObjectMappingRepository $objectMappingRepository,
         TransactionRepository $transactionRepository,
+        LeadRepository $leadRepository,
         ManagerRegistry $registry
     ) {
         parent::__construct();
@@ -38,6 +42,7 @@ class TransactionImportCommand extends Command
         $this->objectMappingRepository = $objectMappingRepository;
         $this->transactionRepository = $transactionRepository;
         $this->registry = $registry;
+        $this->leadRepository = $leadRepository;
     }
 
     protected function configure()
@@ -86,6 +91,8 @@ class TransactionImportCommand extends Command
             return;
         }
 
-        $this->transactionRepository->createOrUpdate(Transaction::fromOrder($lead['internal_object_id'], $order));
+        $lead = $this->leadRepository->getEntity($lead['internal_object_id']);
+
+        $this->transactionRepository->createOrUpdate(Transaction::fromOrder($lead, $order));
     }
 }
