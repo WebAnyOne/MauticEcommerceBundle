@@ -7,9 +7,11 @@ namespace MauticPlugin\MauticEcommerceBundle\Command;
 use Mautic\IntegrationsBundle\Entity\ObjectMappingRepository;
 use Mautic\IntegrationsBundle\Helper\IntegrationsHelper;
 use Mautic\LeadBundle\Entity\LeadRepository;
+use MauticPlugin\MauticEcommerceBundle\Entity\ProductRepository;
 use MauticPlugin\MauticEcommerceBundle\Entity\Transaction;
 use MauticPlugin\MauticEcommerceBundle\Entity\TransactionRepository;
 use MauticPlugin\MauticEcommerceBundle\Model\Order;
+use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Manual\MappingManualFactory;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -30,11 +32,14 @@ class TransactionImportCommand extends Command
 
     private LeadRepository $leadRepository;
 
+    private ProductRepository $productRepository;
+
     public function __construct(
         IntegrationsHelper $integrationsHelper,
         ObjectMappingRepository $objectMappingRepository,
         TransactionRepository $transactionRepository,
         LeadRepository $leadRepository,
+        ProductRepository $productRepository,
         ManagerRegistry $registry
     ) {
         parent::__construct();
@@ -43,6 +48,7 @@ class TransactionImportCommand extends Command
         $this->transactionRepository = $transactionRepository;
         $this->registry = $registry;
         $this->leadRepository = $leadRepository;
+        $this->productRepository = $productRepository;
     }
 
     protected function configure()
@@ -81,7 +87,7 @@ class TransactionImportCommand extends Command
     {
         $lead = $this->objectMappingRepository->getInternalObject(
             $integrationName,
-            'customer',
+            MappingManualFactory::CUSTOMER_OBJECT,
             $order->customerId,
             'lead'
         );
@@ -93,6 +99,25 @@ class TransactionImportCommand extends Command
 
         $lead = $this->leadRepository->getEntity($lead['internal_object_id']);
 
-        $this->transactionRepository->createOrUpdate(Transaction::fromOrder($lead, $order));
+        $transaction = Transaction::fromOrder($lead, $order);
+
+        foreach ($order->products as $orderProduct) {
+            $internalProduct = $this->objectMappingRepository->getInternalObject(
+                $integrationName,
+                MappingManualFactory::PRODUCT_OBJECT,
+                $orderProduct->productId,
+                'product'
+            );
+
+            if ($internalProduct === null) {
+                continue;
+            }
+
+            $productEntity = $this->productRepository->find($internalProduct['internal_object_id']);
+
+            $transaction->addProduct($productEntity, $orderProduct->quantity);
+        }
+
+        $this->transactionRepository->createOrUpdate($transaction);
     }
 }

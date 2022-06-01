@@ -12,6 +12,7 @@ use MauticPlugin\MauticEcommerceBundle\Model\Order;
 use MauticPlugin\MauticEcommerceBundle\Model\Product;
 use MauticPlugin\MauticEcommerceBundle\Prestashop\Normalizer\CustomerNormalizer;
 use MauticPlugin\MauticEcommerceBundle\Prestashop\Normalizer\OrderNormalizer;
+use MauticPlugin\MauticEcommerceBundle\Prestashop\Normalizer\OrderProductNormalizer;
 use MauticPlugin\MauticEcommerceBundle\Prestashop\Normalizer\ProductNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
@@ -36,6 +37,7 @@ class Client implements ClientInterface
                 new CustomerNormalizer(),
                 new OrderNormalizer(),
                 new ProductNormalizer(),
+                new OrderProductNormalizer(),
             ],
             [new JsonEncoder()]
         );

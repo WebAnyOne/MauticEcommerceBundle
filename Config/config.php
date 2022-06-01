@@ -10,14 +10,6 @@ return [
     'version' => '0.0.1',
     'author' => 'elao',
     'services' => [
-        'other' => [
-            'mautic_ecommerce.repository.transaction' => [
-                'class' => Bundle\Entity\TransactionRepository::class,
-                'arguments' => [
-                    'doctrine',
-                ],
-            ],
-        ],
         'commands' => [
             'mautic_ecommerce.command.transaction_import' => [
                 'class' => Bundle\Command\TransactionImportCommand::class,
@@ -26,6 +18,7 @@ return [
                     'mautic.integrations.repository.object_mapping',
                     'mautic_ecommerce.repository.transaction',
                     'mautic.lead.repository.lead',
+                    'mautic_ecommerce.repository.product',
                     'doctrine',
                 ],
                 'tag' => 'console.command',
@@ -115,6 +108,12 @@ return [
             ],
         ],
         'repositories' => [
+            'mautic_ecommerce.repository.transaction' => [
+                'class' => Bundle\Entity\TransactionRepository::class,
+                'arguments' => [
+                    'doctrine',
+                ],
+            ],
             'mautic_ecommerce.repository.product' => [
                 'class' => Doctrine\ORM\EntityRepository::class,
                 'factory' => ['@doctrine.orm.entity_manager', 'getRepository'],

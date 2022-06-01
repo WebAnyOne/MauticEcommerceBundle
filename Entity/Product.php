@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MauticPlugin\MauticEcommerceBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -38,6 +39,11 @@ class Product
      * @ORM\Column(type="datetime_immutable", nullable=false)
      */
     private \DateTimeImmutable $updatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TransactionProduct::class, mappedBy="product")
+     */
+    private Collection $transactions;
 
     public function getId(): int
     {
