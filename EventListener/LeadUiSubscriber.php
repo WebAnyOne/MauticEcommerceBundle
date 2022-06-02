@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MauticPlugin\MauticEcommerceBundle\EventListener;
 
 use Mautic\CoreBundle\CoreEvents;
@@ -18,12 +20,12 @@ class LeadUiSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getSubscribedEvents()
     {
         return [
-            CoreEvents::VIEW_INJECT_CUSTOM_CONTENT => 'onLeadDetailRender'
+            CoreEvents::VIEW_INJECT_CUSTOM_CONTENT => 'onLeadDetailRender',
         ];
     }
 

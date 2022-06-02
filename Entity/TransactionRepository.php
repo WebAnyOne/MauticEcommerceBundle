@@ -49,7 +49,7 @@ class TransactionRepository extends ServiceEntityRepository
 
     public function getTransactionsCount(Lead $lead, array $filters = null): int
     {
-        return $this->count(['leadId' => $lead]);
+        return $this->count(['lead' => $lead]);
     }
 
     public function getTransactions(Lead $lead, array $filters = null, array $orderBy = null, $page = 1, $limit = 25): array
@@ -57,10 +57,33 @@ class TransactionRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('t');
 
         $queryBuilder
-            ->andWhere('t.leadId = :leadId')
-            ->setParameter('leadId', $lead->getId())
+            ->andWhere('t.lead = :lead')
+            ->setParameter('lead', $lead)
         ;
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function getAllTransactions($start = 1, $limit = 25): array
+    {
+        $queryBuilder = $this->createQueryBuilder('t');
+
+        $queryBuilder
+            ->setFirstResult($start)
+            ->setMaxResults($limit)
+        ;
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function getAllTransactionsCount(): int
+    {
+        $queryBuilder = $this->createQueryBuilder('t');
+
+        $queryBuilder
+            ->select('count(t.id)')
+        ;
+
+        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }
 }
