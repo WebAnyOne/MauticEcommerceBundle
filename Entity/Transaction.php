@@ -49,7 +49,7 @@ class Transaction
     private int $nbProducts;
 
     /**
-     * @ORM\OneToMany(targetEntity=TransactionProduct::class, mappedBy="transactions", indexBy="product", cascade={"all"})
+     * @ORM\OneToMany(targetEntity=TransactionProduct::class, mappedBy="transaction", indexBy="product", cascade={"all"})
      *
      * @var Collection<int, TransactionProduct>
      */
@@ -106,6 +106,14 @@ class Transaction
     public function addProduct(Product $product, int $quantity): void
     {
         $this->products->set($product->getId(), new TransactionProduct($this, $product, $quantity));
+    }
+
+    /**
+     * @return Collection<int, TransactionProduct>
+     */
+    public function getProducts()
+    {
+        return $this->products;
     }
 
     public function update(Transaction $transaction): void

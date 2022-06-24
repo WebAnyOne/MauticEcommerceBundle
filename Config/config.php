@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use MauticPlugin\MauticEcommerceBundle as Bundle;
+use MauticPlugin\MauticEcommerceBundle\EventListener\EmailSubscriber;
 
 return [
     'name' => 'Ecommerce',
@@ -106,6 +107,11 @@ return [
                 ],
                 'tag' => 'kernel.event_subscriber',
             ],
+            'mautic_ecommerce_subscriber.email' => [
+                'class' => EmailSubscriber::class,
+                'tag' => 'kernel.event_subscriber',
+                'arguments' => ['@mautic_ecommerce.email.parser'],
+            ],
         ],
         'repositories' => [
             'mautic_ecommerce.repository.transaction' => [
@@ -119,6 +125,14 @@ return [
                 'factory' => ['@doctrine.orm.entity_manager', 'getRepository'],
                 'arguments' => [
                     Bundle\Entity\Product::class,
+                ],
+            ],
+        ],
+        'others' => [
+            'mautic_ecommerce.email.parser' => [
+                'class' => \MauticPlugin\MauticEcommerceBundle\Email\Parser::class,
+                'arguments' => [
+                    '@mautic_ecommerce.repository.transaction',
                 ],
             ],
         ],
