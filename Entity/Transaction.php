@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace MauticPlugin\MauticEcommerceBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Mautic\LeadBundle\Entity\Lead;
 use MauticPlugin\MauticEcommerceBundle\Model\Order;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="transactions")
+ * @ORM\Table(name="ecommerce_transaction")
  */
 class Transaction
 {
     /**
-     * @ORM\Column(type="integer", nullable=false, name="lead_id")
+     * @ORM\ManyToOne(targetEntity=Lead::class)
      */
-    private $leadId;
+    private Lead $lead;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
@@ -45,25 +48,34 @@ class Transaction
      */
     private int $nbProducts;
 
+    /**
+     * @ORM\OneToMany(targetEntity=TransactionProduct::class, mappedBy="transactions", indexBy="product", cascade={"all"})
+     *
+     * @var Collection<int, TransactionProduct>
+     */
+    private Collection $products;
+
     public function __construct(
-        $leadId,
+        Lead $lead,
         int $id,
         \DateTimeImmutable $date,
         int $priceWithoutTaxes,
         int $priceWithTaxes,
         int $nbProducts
     ) {
-        $this->leadId = $leadId;
+        $this->lead = $lead;
         $this->id = $id;
         $this->date = $date;
         $this->priceWithoutTaxes = $priceWithoutTaxes;
         $this->priceWithTaxes = $priceWithTaxes;
         $this->nbProducts = $nbProducts;
+
+        $this->products = new ArrayCollection();
     }
 
-    public function getLeadId()
+    public function getLead()
     {
-        return $this->leadId;
+        return $this->lead;
     }
 
     public function getId(): int
@@ -91,18 +103,30 @@ class Transaction
         return $this->nbProducts;
     }
 
+    public function addProduct(Product $product, int $quantity): void
+    {
+        $this->products->set($product->getId(), new TransactionProduct($this, $product, $quantity));
+    }
+
     public function update(Transaction $transaction): void
     {
         $this->date = $transaction->date;
         $this->priceWithoutTaxes = $transaction->priceWithoutTaxes;
         $this->priceWithTaxes = $transaction->priceWithTaxes;
         $this->nbProducts = $transaction->nbProducts;
+
+        $this->products->clear();
+
+        /** @var TransactionProduct $product */
+        foreach ($transaction->products as $product) {
+            $this->addProduct($product->getProduct(), $product->getQuantity());
+        }
     }
 
-    public static function fromOrder(string $leadId, Order $order): self
+    public static function fromOrder(Lead $lead, Order $order): self
     {
         return new self(
-            $leadId,
+            $lead,
             $order->id,
             $order->date,
             $order->priceWithoutTaxes,

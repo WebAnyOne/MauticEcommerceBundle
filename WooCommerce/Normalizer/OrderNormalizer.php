@@ -6,6 +6,7 @@ namespace MauticPlugin\MauticEcommerceBundle\WooCommerce\Normalizer;
 
 use MauticPlugin\MauticEcommerceBundle\Integration\WooCommerceIntegration;
 use MauticPlugin\MauticEcommerceBundle\Model\Order;
+use MauticPlugin\MauticEcommerceBundle\Model\OrderProduct;
 use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
@@ -25,7 +26,8 @@ class OrderNormalizer implements ContextAwareDenormalizerInterface, Denormalizer
             $this->denormalizer->denormalize($data['date_created'], \DateTimeImmutable::class),
             $total - $taxes,
             $total,
-            \count($data['line_items'])
+            \count($data['line_items']),
+            $this->denormalizer->denormalize($data['line_items'], OrderProduct::class . '[]'),
         );
     }
 

@@ -13,13 +13,17 @@ class Order
     public int $priceWithTaxes;
     public int $nbProducts;
 
+    /** @var OrderProduct[] */
+    public array $products;
+
     public function __construct(
         int $id,
         int $customerId,
         \DateTimeImmutable $date,
-        float $priceWithoutTaxes,
-        float $priceWithTaxes,
-        int $nbProducts
+        int $priceWithoutTaxes,
+        int $priceWithTaxes,
+        int $nbProducts,
+        array $products
     ) {
         $this->id = $id;
         $this->date = $date;
@@ -27,5 +31,6 @@ class Order
         $this->priceWithTaxes = $priceWithTaxes;
         $this->nbProducts = $nbProducts;
         $this->customerId = $customerId;
+        $this->products = $products;
     }
 }

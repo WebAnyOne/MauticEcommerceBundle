@@ -17,6 +17,7 @@ use Mautic\IntegrationsBundle\Sync\DAO\Mapping\MappingManualDAO;
 use Mautic\IntegrationsBundle\Sync\SyncDataExchange\Internal\Object\Contact;
 use Mautic\IntegrationsBundle\Sync\SyncDataExchange\SyncDataExchangeInterface;
 use MauticPlugin\MauticEcommerceBundle\Sync\Config;
+use MauticPlugin\MauticEcommerceBundle\Sync\DataExchange\Internal\Product;
 use MauticPlugin\MauticEcommerceBundle\Sync\DataExchange\SyncDataExchange;
 use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Field\FieldRepository;
 use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Manual\MappingManualFactory;
@@ -45,6 +46,7 @@ abstract class EcommerceAbstractIntegration extends BasicIntegration implements 
     {
         return [
             MappingManualFactory::CUSTOMER_OBJECT => 'Customer',
+            MappingManualFactory::PRODUCT_OBJECT => 'Products',
         ];
     }
 
@@ -52,6 +54,7 @@ abstract class EcommerceAbstractIntegration extends BasicIntegration implements 
     {
         return [
             MappingManualFactory::CUSTOMER_OBJECT => Contact::NAME,
+            MappingManualFactory::PRODUCT_OBJECT => Product::NAME,
         ];
     }
 
