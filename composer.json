@@ -21,7 +21,7 @@
     "php": ">=7.4.0 <8.1",
     "mautic/core-lib": "^4.0",
     "symfony/serializer": ">=4.4",
-    "guzzlehttp/oauth-subscriber": "^0.5.0"
+    "guzzlehttp/oauth-subscriber": "^0.6.0"
   },
   "conflict": {
     "guzzlehttp/psr7": ">=2"

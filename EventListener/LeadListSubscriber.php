@@ -11,6 +11,7 @@ use Mautic\LeadBundle\Provider\TypeOperatorProviderInterface;
 use Mautic\LeadBundle\Segment\OperatorOptions;
 use Mautic\LeadBundle\Segment\Query\Filter\ForeignFuncFilterQueryBuilder;
 use Mautic\LeadBundle\Segment\Query\Filter\ForeignValueFilterQueryBuilder;
+use MauticPlugin\MauticEcommerceBundle\Segment\Query\Filter\PurchaseProductFilterQueryBuilder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class LeadListSubscriber implements EventSubscriberInterface
@@ -73,6 +74,19 @@ class LeadListSubscriber implements EventSubscriberInterface
                 OperatorOptions::LESS_THAN_OR_EQUAL,
             ]),
         ]);
+
+        $event->addChoice('lead', 'lead_transaction_purchase_product', [
+            'label' => 'Produit acheté',
+            'object' => 'lead',
+            'properties' => [
+                'type' => 'lookup_id',
+                'data-action' => 'plugin:Ecommerce:products'
+            ],
+            'operators' => $this->typeOperatorProvider->getOperatorsIncluding([
+                OperatorOptions::EQUAL_TO,
+                OperatorOptions::NOT_EQUAL_TO,
+            ]),
+        ]);
     }
 
     public function onGenerateSegmentDictionary(SegmentDictionaryGenerationEvent $event): void
@@ -101,6 +115,10 @@ class LeadListSubscriber implements EventSubscriberInterface
             'table_field'         => 'id',
             'func'                => 'sum',
             'field'               => 'price_with_taxes',
+        ]);
+
+        $event->addTranslation('lead_transaction_purchase_product', [
+            'type' => PurchaseProductFilterQueryBuilder::getServiceId(),
         ]);
     }
 }
