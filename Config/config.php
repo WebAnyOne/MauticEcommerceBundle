@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use MauticPlugin\MauticEcommerceBundle as Bundle;
+use MauticPlugin\MauticEcommerceBundle\Email\Parser;
 use MauticPlugin\MauticEcommerceBundle\EventListener\EmailSubscriber;
 
 return [
@@ -110,7 +111,10 @@ return [
             'mautic_ecommerce_subscriber.email' => [
                 'class' => EmailSubscriber::class,
                 'tag' => 'kernel.event_subscriber',
-                'arguments' => ['@mautic_ecommerce.email.parser'],
+                'arguments' => [
+                    '@mautic_ecommerce.email.parser',
+                    '@translator',
+                ],
             ],
         ],
         'repositories' => [
@@ -130,7 +134,7 @@ return [
         ],
         'others' => [
             'mautic_ecommerce.email.parser' => [
-                'class' => \MauticPlugin\MauticEcommerceBundle\Email\Parser::class,
+                'class' => Parser::class,
                 'arguments' => [
                     '@mautic_ecommerce.repository.transaction',
                 ],
