@@ -33,7 +33,9 @@
     }
   ],
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "*"
+    "friendsofphp/php-cs-fixer": "*",
+    "phpunit/phpunit": "9.5.x-dev",
+    "phpspec/prophecy-phpunit": "2.0.x-dev"
   },
   "config": {
     "allow-plugins": {

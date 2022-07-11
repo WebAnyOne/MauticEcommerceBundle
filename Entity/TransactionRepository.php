@@ -6,6 +6,7 @@ namespace MauticPlugin\MauticEcommerceBundle\Entity;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Mautic\LeadBundle\Entity\Lead;
 
 class TransactionRepository extends ServiceEntityRepository
 {
@@ -25,5 +26,18 @@ class TransactionRepository extends ServiceEntityRepository
         }
 
         $existingTransaction->update($transaction);
+    }
+
+    public function findLatest($lead): ?Transaction
+    {
+        if ($lead instanceof Lead) {
+            $id = $lead->getId();
+        } elseif (\is_array($lead)) {
+            $id = $lead['id'];
+        } else {
+            throw new \RuntimeException('Unable to retrieve the lead');
+        }
+
+        return $this->findOneBy(['lead' => $id], ['date' => 'DESC']);
     }
 }
