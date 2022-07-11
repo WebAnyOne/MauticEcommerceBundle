@@ -23,9 +23,6 @@
     "symfony/serializer": ">=4.4",
     "guzzlehttp/oauth-subscriber": "^0.6.0"
   },
-  "conflict": {
-    "guzzlehttp/psr7": ">=2"
-  },
   "repositories": [
     {
       "type": "git",

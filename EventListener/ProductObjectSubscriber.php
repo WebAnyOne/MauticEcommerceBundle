@@ -10,8 +10,9 @@ use Mautic\IntegrationsBundle\Event\InternalObjectUpdateEvent;
 use Mautic\IntegrationsBundle\IntegrationEvents;
 use MauticPlugin\MauticEcommerceBundle\Sync\DataExchange\Internal\Product;
 use MauticPlugin\MauticEcommerceBundle\Sync\DataExchange\Internal\ProductObjectHelper;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ProductObjectSubscriber implements \Symfony\Component\EventDispatcher\EventSubscriberInterface
+class ProductObjectSubscriber implements EventSubscriberInterface
 {
     private ProductObjectHelper $productObjectHelper;
 

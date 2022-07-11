@@ -93,15 +93,9 @@ class FieldRepository
             ],
         ],
     ];
-    /**
-     * @var CacheStorageHelper
-     */
-    private $cacheProvider;
 
-    /**
-     * @var array
-     */
-    private $apiFields = [];
+    private CacheStorageHelper $cacheProvider;
+    private array $apiFields = [];
 
     public function __construct(CacheStorageHelper $cacheProvider)
     {

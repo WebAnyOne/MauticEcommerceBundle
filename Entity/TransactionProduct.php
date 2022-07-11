@@ -13,14 +13,21 @@ use Doctrine\ORM\Mapping as ORM;
 class TransactionProduct
 {
     /**
-     * @ORM\Id()
+     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private int $id;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Transaction::class, inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
      */
     private Transaction $transaction;
 
     /**
-     * @ORM\Id()
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="transactions")
+     * @ORM\JoinColumn(nullable=false)
      */
     private Product $product;
 
@@ -34,6 +41,11 @@ class TransactionProduct
         $this->transaction = $transaction;
         $this->product = $product;
         $this->quantity = $quantity;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getTransaction(): Transaction

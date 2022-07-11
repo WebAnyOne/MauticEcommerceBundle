@@ -34,7 +34,10 @@ class PrestashopIntegration extends EcommerceAbstractIntegration
 
     public function getClient(): ClientInterface
     {
-        ['url' => $url, 'token' => $token] = $this->getIntegrationConfiguration()->getApiKeys();
+        [
+            'url' => $url,
+            'token' => $token
+        ] = $this->getIntegrationConfiguration()->getApiKeys();
 
         return new Client($url, $token);
     }

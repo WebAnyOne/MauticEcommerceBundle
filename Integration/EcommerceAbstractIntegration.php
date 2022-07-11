@@ -29,8 +29,7 @@ abstract class EcommerceAbstractIntegration extends BasicIntegration implements 
     protected FieldRepository $fieldRepository;
     protected MappingManualFactory $mappingManualFactory;
     protected SyncDataExchange $syncDataExchange;
-
-    private ?Config $config = null;
+    private ?Config $config;
 
     public function __construct(
         FieldRepository $fieldRepository,
@@ -40,6 +39,7 @@ abstract class EcommerceAbstractIntegration extends BasicIntegration implements 
         $this->fieldRepository = $fieldRepository;
         $this->mappingManualFactory = $mappingManualFactory;
         $this->syncDataExchange = $syncDataExchange;
+        $this->config = new Config($this);
     }
 
     public function getSyncConfigObjects(): array
@@ -115,10 +115,6 @@ abstract class EcommerceAbstractIntegration extends BasicIntegration implements 
 
     public function getConfig(): Config
     {
-        if ($this->config === null) {
-            $this->config = new Config($this);
-        }
-
         return $this->config;
     }
 }

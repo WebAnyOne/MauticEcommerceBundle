@@ -7,8 +7,9 @@ namespace MauticPlugin\MauticEcommerceBundle\EventListener;
 use Mautic\IntegrationsBundle\Event\MauticSyncFieldsLoadEvent;
 use Mautic\IntegrationsBundle\IntegrationEvents;
 use MauticPlugin\MauticEcommerceBundle\Sync\DataExchange\Internal\Product;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class SyncSubscriber implements \Symfony\Component\EventDispatcher\EventSubscriberInterface
+class SyncSubscriber implements EventSubscriberInterface
 {
     /**
      * {@inheritDoc}

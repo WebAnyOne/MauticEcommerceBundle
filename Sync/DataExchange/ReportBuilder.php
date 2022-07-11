@@ -20,28 +20,11 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class ReportBuilder
 {
-    /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * @var FieldRepository
-     */
-    private $fieldRepository;
-
-    /**
-     * @var ValueNormalizer
-     */
-    private $valueNormalizer;
-
-    /**
-     * @var ReportDAO
-     */
-    private $report;
-
+    private ?Config $config = null;
+    private FieldRepository $fieldRepository;
+    private ValueNormalizer $valueNormalizer;
+    private ?ReportDAO $report = null;
     private IntegrationsHelper $integrationsHelper;
-
     private PropertyAccessor $propertyAccessor;
 
     public function __construct(FieldRepository $fieldRepository, IntegrationsHelper $integrationsHelper)
@@ -61,10 +44,6 @@ class ReportBuilder
 
         $this->config = $integration->getConfig();
         $client = $integration->getClient();
-
-        // Set the options this integration supports (see InputOptionsDAO for others)
-        $startDateTime = $options->getStartDateTime();
-        $endDateTime = $options->getEndDateTime();
 
         $this->report = new ReportDAO($options->getIntegration());
 
