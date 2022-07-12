@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use MauticPlugin\MauticEcommerceBundle as Bundle;
+use MauticPlugin\MauticEcommerceBundle\Controller\AjaxController;
 use MauticPlugin\MauticEcommerceBundle\Email\Parser;
 use MauticPlugin\MauticEcommerceBundle\EventListener\EmailSubscriber;
+use MauticPlugin\MauticEcommerceBundle\Segment\Query\Filter\PurchaseProductFilterQueryBuilder;
 
 return [
     'name' => 'Ecommerce',
@@ -133,6 +135,9 @@ return [
             ],
         ],
         'others' => [
+            PurchaseProductFilterQueryBuilder::getServiceId() => [
+                'class' => PurchaseProductFilterQueryBuilder::class
+            ],
             'mautic_ecommerce.email.parser' => [
                 'class' => Parser::class,
                 'arguments' => [
