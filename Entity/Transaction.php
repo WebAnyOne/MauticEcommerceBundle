@@ -49,7 +49,7 @@ class Transaction
     private int $nbProducts;
 
     /**
-     * @ORM\OneToMany(targetEntity=TransactionProduct::class, mappedBy="transaction", indexBy="product", cascade={"all"})
+     * @ORM\OneToMany(targetEntity=TransactionProduct::class, mappedBy="transaction", indexBy="product", cascade={"all"}, orphanRemoval=true)
      *
      * @var Collection<int, TransactionProduct>
      */
@@ -123,7 +123,7 @@ class Transaction
         $this->priceWithTaxes = $transaction->priceWithTaxes;
         $this->nbProducts = $transaction->nbProducts;
 
-        $this->products->clear();
+        $this->products = new ArrayCollection();
 
         /** @var TransactionProduct $product */
         foreach ($transaction->products as $product) {

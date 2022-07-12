@@ -23,15 +23,10 @@ class TransactionImportCommand extends Command
     public static $defaultName = 'ecommerce:transaction:import';
 
     private ObjectMappingRepository $objectMappingRepository;
-
     private ManagerRegistry $registry;
-
     private TransactionRepository $transactionRepository;
-
     private IntegrationsHelper $integrationsHelper;
-
     private LeadRepository $leadRepository;
-
     private ProductRepository $productRepository;
 
     public function __construct(

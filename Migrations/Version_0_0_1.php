@@ -24,11 +24,12 @@ class Version_0_0_1 extends AbstractMigration
     {
         $this->addSql(<<<SQL
             CREATE TABLE ecommerce_transaction_product (
+                id INT AUTO_INCREMENT NOT NULL,
                 transaction_id INT NOT NULL, 
                 product_id INT NOT NULL, 
                 quantity INT NOT NULL, 
                 INDEX IDX_FAF642FB4584665A (product_id), 
-                PRIMARY KEY(transaction_id, product_id)
+                PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB ROW_FORMAT = DYNAMIC;
 
             CREATE TABLE ecommerce_transaction (

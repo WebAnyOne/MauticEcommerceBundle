@@ -10,16 +10,8 @@ use MauticPlugin\MauticEcommerceBundle\Integration\EcommerceAbstractIntegration;
 
 class Config
 {
-    /**
-     * @var array[]
-     */
-    private $fieldDirections = [];
-
-    /**
-     * @var array[]
-     */
-    private $mappedFields = [];
-
+    private array $fieldDirections = [];
+    private array $mappedFields = [];
     private EcommerceAbstractIntegration $integration;
 
     public function __construct(EcommerceAbstractIntegration $integration)

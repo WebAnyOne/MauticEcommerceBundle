@@ -8,11 +8,11 @@ use Mautic\IntegrationsBundle\Sync\DAO\Mapping\ObjectMappingDAO;
 
 class Field
 {
-    private $name;
-    private $label;
-    private $dataType;
-    private $isRequired;
-    private $isWritable;
+    private string $name;
+    private string $label;
+    private string $dataType;
+    private bool $isRequired;
+    private bool $isWritable;
 
     public function __construct(array $field = [])
     {

@@ -19,16 +19,8 @@ class MappingManualFactory
     public const CUSTOMER_OBJECT = 'customer';
     public const PRODUCT_OBJECT = 'product';
 
-    /**
-     * @var FieldRepository
-     */
-    private $fieldRepository;
-
-    /**
-     * @var MappingManualDAO
-     */
-    private $manual;
-
+    private FieldRepository $fieldRepository;
+    private ?MappingManualDAO $manual = null;
     private IntegrationsHelper $integrationsHelper;
 
     public function __construct(FieldRepository $fieldRepository, IntegrationsHelper $integrationsHelper)
@@ -39,7 +31,7 @@ class MappingManualFactory
 
     public function getManual(string $integrationName): MappingManualDAO
     {
-        if ($this->manual) {
+        if ($this->manual !== null) {
             return $this->manual;
         }
 

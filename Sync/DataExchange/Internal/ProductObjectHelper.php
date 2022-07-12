@@ -42,7 +42,7 @@ class ProductObjectHelper implements ObjectHelperInterface
                 }
 
                 $normalizedValue = $field->getValue()->getNormalizedValue();
-                if ($field->getValue()->getType() == 'datetime') {
+                if ($field->getValue()->getType() === 'datetime') {
                     $normalizedValue = new \DateTimeImmutable($normalizedValue);
                 }
 

@@ -1,3 +1,75 @@
+# Mautic EcommerceBundle
+
+## Installation
+
+- for now add the repository manually inside your composer.json
+
+```json
+{
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../MauticEcommerceBundle"
+    }
+  ]
+}
+```
+- then require it via composer
+```
+composer require 'webanyone/mautic-ecommerce-bundle:*'
+```
+
+## Configuration
+
+Open the plugin page, and you must saw 2 plugins, prestashop & woocommerce
+
+### Prestashop
+
+Enabled
+- url (must end with /api)
+- token (readonly for now)
+Feature
+- check everything
+Field mapping
+- choose each field (not sure if we need this)
+
+TODO: How to create a token in prestashop ?
+
+### WooCommerce
+
+Enabled
+- url (must end with /api)
+- consumer key
+- consumer secret
+  Feature
+- check everything
+  Field mapping
+- choose each field (not sure if we need this)
+
+TODO: How to create a token in woocommerce ?
+
+## Sync
+
+Customer & Product of ecommerce solution are sync using sync engine of Mautic, to retrieve theme add the following cron to your server
+
+```
+bin/console mautic:integrations:sync -f -vvv -- WooCommerce
+# or
+bin/console mautic:integrations:sync -f -vvv -- Prestashop
+```
+
+Transaction are sync using a different command which must run after
+
+```
+bin/console ecommerce:transaction:import WooCommerce
+# or
+bin/console ecommerce:transaction:import Prestashop
+```
+
+## Segments
+
+TODO: list & explain each of the filter choice provided
+
 ## Emails
 
 You have access to information about the last transaction made by a lead inside the mails:

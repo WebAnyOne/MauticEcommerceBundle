@@ -101,20 +101,20 @@ class LeadListSubscriber implements EventSubscriberInterface
             'type' => ForeignFuncFilterQueryBuilder::getServiceId(),
             'foreign_table' => 'ecommerce_transaction',
             'foreign_table_field' => 'lead_id',
-            'table'               => 'leads',
-            'table_field'         => 'id',
-            'func'                => 'count',
-            'field'               => 'id',
+            'table' => 'leads',
+            'table_field' => 'id',
+            'func' => 'count',
+            'field' => 'id',
         ]);
 
         $event->addTranslation('lead_transaction_sum_price_with_taxes', [
             'type' => ForeignFuncFilterQueryBuilder::getServiceId(),
             'foreign_table' => 'ecommerce_transaction',
             'foreign_table_field' => 'lead_id',
-            'table'               => 'leads',
-            'table_field'         => 'id',
-            'func'                => 'sum',
-            'field'               => 'price_with_taxes',
+            'table' => 'leads',
+            'table_field' => 'id',
+            'func' => 'sum',
+            'field' => 'price_with_taxes',
         ]);
 
         $event->addTranslation('lead_transaction_purchase_product', [
