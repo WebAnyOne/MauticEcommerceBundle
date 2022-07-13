@@ -38,7 +38,7 @@ TODO: How to create a token in prestashop ?
 ### WooCommerce
 
 Enabled
-- url (must end with /api)
+- url (must end with /wp-json/wc/v3)
 - consumer key
 - consumer secret
   Feature
