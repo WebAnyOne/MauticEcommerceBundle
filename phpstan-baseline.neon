@@ -1,0 +1,21 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$content of method MauticPlugin\\\\MauticEcommerceBundle\\\\Email\\\\Parser\\:\\:parse\\(\\) expects string, array given\\.$#"
+			count: 1
+			path: EventListener/EmailSubscriber.php
+
+		-
+			message: "#^Cannot cast array\\|bool\\|string to string\\.$#"
+			count: 1
+			path: Segment/Query/Filter/PurchaseProductFilterQueryBuilder.php
+
+		-
+			message: "#^Cannot call method addObjectMapping\\(\\) on Mautic\\\\IntegrationsBundle\\\\Sync\\\\DAO\\\\Mapping\\\\MappingManualDAO\\|null\\.$#"
+			count: 1
+			path: Sync/Mapping/Manual/MappingManualFactory.php
+
+		-
+			message: "#^Method MauticPlugin\\\\MauticEcommerceBundle\\\\Sync\\\\Mapping\\\\Manual\\\\MappingManualFactory\\:\\:getManual\\(\\) should return Mautic\\\\IntegrationsBundle\\\\Sync\\\\DAO\\\\Mapping\\\\MappingManualDAO but returns Mautic\\\\IntegrationsBundle\\\\Sync\\\\DAO\\\\Mapping\\\\MappingManualDAO\\|null\\.$#"
+			count: 1
+			path: Sync/Mapping/Manual/MappingManualFactory.php

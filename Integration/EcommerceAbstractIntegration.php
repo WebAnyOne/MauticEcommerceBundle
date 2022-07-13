@@ -25,11 +25,12 @@ use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Manual\MappingManualFactory;
 abstract class EcommerceAbstractIntegration extends BasicIntegration implements BasicInterface, ConfigFormInterface, ConfigFormAuthInterface, ConfigFormSyncInterface, SyncInterface, EcommerceIntegrationInterface
 {
     use DefaultConfigFormTrait;
+    public const NAME = 'name';
 
     protected FieldRepository $fieldRepository;
     protected MappingManualFactory $mappingManualFactory;
     protected SyncDataExchange $syncDataExchange;
-    private ?Config $config;
+    private Config $config;
 
     public function __construct(
         FieldRepository $fieldRepository,
@@ -71,7 +72,7 @@ abstract class EcommerceAbstractIntegration extends BasicIntegration implements 
      */
     public function getOptionalFieldsForMapping(string $objectName): array
     {
-        $this->fieldRepository->getOptionalFieldsForMapping($objectName);
+        return $this->fieldRepository->getOptionalFieldsForMapping($objectName);
     }
 
     /**

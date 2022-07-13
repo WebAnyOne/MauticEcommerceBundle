@@ -10,6 +10,6 @@ class ParamsHelper
     {
         preg_match_all('/ ?([^=]+)="([^"]+)"/', $paramsString, $matches);
 
-        return array_combine($matches[1], $matches[2]);
+        return (array) array_combine($matches[1], $matches[2]);
     }
 }

@@ -1,0 +1,62 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [ opened, synchronize, reopened, ready_for_review ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: 'Lint'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Do not run on WIP or Draft PRs
+    if: "!github.event.pull_request || (!contains(github.event.pull_request.labels.*.name, 'WIP') && github.event.pull_request.draft == false)"
+    env:
+      working-directory: .
+    defaults:
+      run:
+        # https://github.community/t/use-working-directory-for-entire-job/16747/9
+        working-directory: ${{ env.working-directory }}
+
+    steps:
+
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+
+      - name: 'Setup PHP'
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: "none"
+          extensions: "json"
+          ini-values: "memory_limit=-1"
+          php-version: "7.4"
+
+      - name: 'Determine composer cache directory'
+        id: composer-cache
+        run: echo "::set-output name=directory::$(composer config cache-dir)"
+
+      - name: "Cache dependencies installed with composer"
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.directory }}
+          key: "composer-${{ hashFiles('composer.json') }}"
+          restore-keys: "composer-"
+
+      - name: 'Install dependencies & setup project'
+        id: install
+        run: make install@integration
+
+      - name: 'Lint PhpStan'
+        if: always() && steps.install.outcome == 'success'
+        run: make lint.phpstan@integration
+
+      - name: 'Lint PHP CS Fixer'
+        if: always() && steps.install.outcome == 'success'
+        run: make lint.php-cs-fixer@integration

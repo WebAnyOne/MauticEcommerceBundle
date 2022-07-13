@@ -74,7 +74,7 @@ class ProductObjectHelper implements ObjectHelperInterface
     {
         $updatedMappedObjects = [];
 
-        /** @var ProductEntity[] $companies */
+        /** @var ProductEntity[] $products */
         $products = $this->productRepository->getEntities(['ids' => $ids]);
 
         foreach ($products as $product) {

@@ -20,7 +20,7 @@ class TransactionParserTest extends TestCase
     public function testParse(string $content, string $expecterdOutput): void
     {
         $lead = $this->prophesize(Lead::class);
-        $transaction = new Transaction($lead->reveal(), 1, new \DateTimeImmutable(), 3200, 3200, 2);
+        $transaction = new Transaction($lead->reveal(), 1, new \DateTimeImmutable('2022-06-28'), 3200, 3200, 2);
         $parser = new TransactionParser();
         $result = $parser->parse($content, $transaction);
 

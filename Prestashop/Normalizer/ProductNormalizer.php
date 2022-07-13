@@ -25,12 +25,12 @@ class ProductNormalizer implements ContextAwareDenormalizerInterface, Denormaliz
         );
     }
 
-    public function supportsDenormalization($data, string $type, string $format = null, array $context = [])
+    public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
     {
         return $type === Product::class && $context['integration'] === PrestashopIntegration::NAME;
     }
 
-    protected function denormalizeDate(string $date)
+    protected function denormalizeDate(string $date): \DateTimeImmutable
     {
         return $this->denormalizer->denormalize($date, \DateTimeImmutable::class);
     }

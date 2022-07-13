@@ -10,7 +10,7 @@ use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Manual\MappingManualFactory;
 
 class FieldRepository
 {
-    private static $fields = [
+    private static array $fields = [
         MappingManualFactory::CUSTOMER_OBJECT => [
             [
                 'name' => 'id',

@@ -11,6 +11,7 @@ use Mautic\IntegrationsBundle\Sync\DAO\Sync\Report\ObjectDAO as ReportObjectDAO;
 use Mautic\IntegrationsBundle\Sync\DAO\Sync\Report\ReportDAO;
 use MauticPlugin\MauticEcommerceBundle\Integration\EcommerceAbstractIntegration;
 use MauticPlugin\MauticEcommerceBundle\Model\Customer;
+use MauticPlugin\MauticEcommerceBundle\Model\Product;
 use MauticPlugin\MauticEcommerceBundle\Sync\Config;
 use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Field\Field;
 use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Field\FieldRepository;
@@ -20,10 +21,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class ReportBuilder
 {
-    private ?Config $config = null;
     private FieldRepository $fieldRepository;
     private ValueNormalizer $valueNormalizer;
-    private ?ReportDAO $report = null;
     private IntegrationsHelper $integrationsHelper;
     private PropertyAccessor $propertyAccessor;
 
@@ -42,10 +41,10 @@ class ReportBuilder
         /** @var EcommerceAbstractIntegration $integration */
         $integration = $this->integrationsHelper->getIntegration($options->getIntegration());
 
-        $this->config = $integration->getConfig();
+        $config = $integration->getConfig();
         $client = $integration->getClient();
 
-        $this->report = new ReportDAO($options->getIntegration());
+        $report = new ReportDAO($options->getIntegration());
 
         foreach ($requestedObjects as $requestedObject) {
             $objectName = $requestedObject->getObject();
@@ -58,23 +57,25 @@ class ReportBuilder
                 case MappingManualFactory::PRODUCT_OBJECT:
                     $modifiedItems = $client->getProducts($page);
                     break;
+                default:
+                    throw new \RuntimeException(sprintf('Unsupported objectName "%s"', $objectName));
             }
 
             // Add the modified items to the report
-            $this->addModifiedItems($objectName, $modifiedItems);
+            $this->addModifiedItems($report, $config, $objectName, $modifiedItems);
         }
 
-        return $this->report;
+        return $report;
     }
 
     /**
-     * @param Customer[] $changeList
+     * @param Customer[]|Product[] $changeList
      */
-    private function addModifiedItems(string $objectName, array $changeList): void
+    private function addModifiedItems(ReportDAO $report, Config $config, string $objectName, array $changeList): void
     {
         // Get the the field list to know what the field types are
         $fields = $this->fieldRepository->getFields($objectName);
-        $mappedFields = $this->config->getMappedFields($objectName);
+        $mappedFields = $config->getMappedFields($objectName);
         $fieldsToSet = array_intersect(array_keys($mappedFields), array_keys($fields));
 
         foreach ($changeList as $item) {
@@ -104,7 +105,7 @@ class ReportBuilder
             }
 
             // Add the modified/new item to the report
-            $this->report->addObject($objectDAO);
+            $report->addObject($objectDAO);
         }
     }
 }

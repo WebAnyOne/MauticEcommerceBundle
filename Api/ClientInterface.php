@@ -21,7 +21,7 @@ interface ClientInterface
     public function getOrders(int $page, int $limit = 100): array;
 
     /**
-     * @return Product
+     * @return Product[]
      */
     public function getProducts(int $page, int $limit = 100): array;
 }
