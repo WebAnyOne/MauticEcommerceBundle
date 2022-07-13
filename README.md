@@ -2,19 +2,8 @@
 
 ## Installation
 
-- for now add the repository manually inside your composer.json
-
-```json
-{
-  "repositories": [
-    {
-      "type": "path",
-      "url": "../MauticEcommerceBundle"
-    }
-  ]
-}
 ```
-- then require it via composer
+- require it via composer
 ```
 composer require 'webanyone/mautic-ecommerce-bundle:*'
 ```

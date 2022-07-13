@@ -9,7 +9,10 @@
     "ecommerce"
   ],
   "extra": {
-    "install-directory-name": "MauticEcommerceBundle"
+    "install-directory-name": "MauticEcommerceBundle",
+    "branch-alias": {
+      "dev-main": "0.0.x-dev"
+    }
   },
   "autoload-dev": {
     "psr-4": {
