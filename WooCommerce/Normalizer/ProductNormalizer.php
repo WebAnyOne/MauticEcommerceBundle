@@ -30,7 +30,7 @@ class ProductNormalizer implements ContextAwareDenormalizerInterface, Denormaliz
         return $type === Product::class && $context['integration'] === WooCommerceIntegration::NAME;
     }
 
-    protected function denormalizeDate(string $date)
+    protected function denormalizeDate(string $date): \DateTimeImmutable
     {
         return $this->denormalizer->denormalize($date, \DateTimeImmutable::class);
     }

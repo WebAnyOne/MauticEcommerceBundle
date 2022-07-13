@@ -8,6 +8,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Mautic\LeadBundle\Entity\Lead;
 
+/**
+ * @extends ServiceEntityRepository<Transaction>
+ */
 class TransactionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -28,6 +31,9 @@ class TransactionRepository extends ServiceEntityRepository
         $existingTransaction->update($transaction);
     }
 
+    /**
+     * @param array|Lead $lead
+     */
     public function findLatest($lead): ?Transaction
     {
         if ($lead instanceof Lead) {

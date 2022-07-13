@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MauticPlugin\MauticEcommerceBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -41,9 +42,16 @@ class Product
     private \DateTimeImmutable $updatedAt;
 
     /**
+     * @var Collection<int, TransactionProduct>
+     *
      * @ORM\OneToMany(targetEntity=TransactionProduct::class, mappedBy="product")
      */
     private Collection $transactions;
+
+    public function __construct()
+    {
+        $this->transactions = new ArrayCollection();
+    }
 
     public function getId(): int
     {

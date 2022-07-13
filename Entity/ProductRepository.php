@@ -6,6 +6,9 @@ namespace MauticPlugin\MauticEcommerceBundle\Entity;
 
 use Mautic\CoreBundle\Entity\CommonRepository;
 
+/**
+ * @method ?Product find(int $id)
+ */
 class ProductRepository extends CommonRepository
 {
     public function search(string $term): array
@@ -14,7 +17,7 @@ class ProductRepository extends CommonRepository
 
         $queryBuilder
             ->andWhere('product.name LIKE :name')
-            ->setParameter('name', '%'.$term.'%')
+            ->setParameter('name', '%' . $term . '%')
         ;
 
         $queryBuilder->orderBy('product.name', 'ASC');

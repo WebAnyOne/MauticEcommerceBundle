@@ -32,11 +32,16 @@
   "require-dev": {
     "friendsofphp/php-cs-fixer": "*",
     "phpunit/phpunit": "9.5.x-dev",
-    "phpspec/prophecy-phpunit": "2.0.x-dev"
+    "phpspec/prophecy-phpunit": "2.0.x-dev",
+    "jangregor/phpstan-prophecy": "dev-master",
+    "phpstan/extension-installer": "1.2.x-dev",
+    "phpstan/phpstan-doctrine": "1.3.x-dev",
+    "phpstan/phpstan": "1.8.x-dev"
   },
   "config": {
     "allow-plugins": {
-      "symfony/flex": true
+      "symfony/flex": true,
+      "phpstan/extension-installer": true
     }
   }
 }

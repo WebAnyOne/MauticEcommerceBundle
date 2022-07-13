@@ -132,7 +132,7 @@ return [
         ],
         'others' => [
             Bundle\Segment\Query\Filter\PurchaseProductFilterQueryBuilder::getServiceId() => [
-                'class' => Bundle\Segment\Query\Filter\PurchaseProductFilterQueryBuilder::class
+                'class' => Bundle\Segment\Query\Filter\PurchaseProductFilterQueryBuilder::class,
             ],
             'mautic_ecommerce.email.parser' => [
                 'class' => Bundle\Email\Parser::class,

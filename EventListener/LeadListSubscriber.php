@@ -80,7 +80,7 @@ class LeadListSubscriber implements EventSubscriberInterface
             'object' => 'lead',
             'properties' => [
                 'type' => 'lookup_id',
-                'data-action' => 'plugin:Ecommerce:products'
+                'data-action' => 'plugin:Ecommerce:products',
             ],
             'operators' => $this->typeOperatorProvider->getOperatorsIncluding([
                 OperatorOptions::EQUAL_TO,

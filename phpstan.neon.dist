@@ -1,0 +1,12 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 8
+    paths:
+        - .
+    excludePaths:
+        - vendor/
+    ignoreErrors:
+        - '#Constant MAUTIC_TABLE_PREFIX not found.#'
+    checkMissingIterableValueType: false

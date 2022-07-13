@@ -73,7 +73,7 @@ class Transaction
         $this->products = new ArrayCollection();
     }
 
-    public function getLead()
+    public function getLead(): Lead
     {
         return $this->lead;
     }

@@ -10,6 +10,7 @@ use Mautic\LeadBundle\Entity\LeadRepository;
 use MauticPlugin\MauticEcommerceBundle\Entity\ProductRepository;
 use MauticPlugin\MauticEcommerceBundle\Entity\Transaction;
 use MauticPlugin\MauticEcommerceBundle\Entity\TransactionRepository;
+use MauticPlugin\MauticEcommerceBundle\Integration\EcommerceAbstractIntegration;
 use MauticPlugin\MauticEcommerceBundle\Model\Order;
 use MauticPlugin\MauticEcommerceBundle\Sync\Mapping\Manual\MappingManualFactory;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
@@ -46,7 +47,7 @@ class TransactionImportCommand extends Command
         $this->productRepository = $productRepository;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('integrationName', InputArgument::REQUIRED)
@@ -58,6 +59,12 @@ class TransactionImportCommand extends Command
         $integrationName = $input->getArgument('integrationName');
 
         $integration = $this->integrationsHelper->getIntegration($integrationName);
+
+        if (!$integration instanceof EcommerceAbstractIntegration) {
+            throw new \Exception(
+                sprintf('The integration %s must extends %s', $integrationName, EcommerceAbstractIntegration::class)
+            );
+        }
 
         $entityManager = $this->registry->getManager();
         $client = $integration->getClient();
@@ -109,6 +116,9 @@ class TransactionImportCommand extends Command
             }
 
             $productEntity = $this->productRepository->find($internalProduct['internal_object_id']);
+            if ($productEntity === null) {
+                continue;
+            }
 
             $transaction->addProduct($productEntity, $orderProduct->quantity);
         }

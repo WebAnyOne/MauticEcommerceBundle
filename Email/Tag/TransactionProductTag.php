@@ -10,6 +10,8 @@ class TransactionProductTag
 {
     private TransactionProduct $transactionProduct;
     private string $tag;
+
+    /** @phpstan-ignore-next-line Ignored for now as we don't need it */
     private array $params;
 
     public function __construct(TransactionProduct $transactionProduct, string $tag, array $params = [])
