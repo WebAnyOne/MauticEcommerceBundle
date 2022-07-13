@@ -2,7 +2,6 @@
 
 ## Installation
 
-```
 - require it via composer
 ```
 composer require 'webanyone/mautic-ecommerce-bundle:*'
