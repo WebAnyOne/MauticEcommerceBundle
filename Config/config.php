@@ -8,7 +8,7 @@ use MauticPlugin\MauticEcommerceBundle\EventListener\LeadUiSubscriber;
 return [
     'name' => 'Ecommerce',
     'description' => 'Retrieve data from various ecommerce solutions',
-    'version' => '0.0.1',
+    'version' => '0.0.2',
     'author' => 'elao',
     'routes' => [
         'main' => [
