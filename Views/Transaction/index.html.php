@@ -11,7 +11,7 @@ $view['slots']->set('headerTitle', $view['translator']->trans('mautic_ecommerce.
         'MauticCoreBundle:Helper:list_toolbar.html.php',
         [
             'searchHelp' => 'mautic.core.help.searchcommands',
-            'action' => $currentRoute,
+            'action' => '',
         ]
     ); ?>
     <div class="page-list">

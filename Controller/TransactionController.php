@@ -66,11 +66,9 @@ class TransactionController extends AbstractFormController
         return $this->delegateView(
             [
                 'viewParameters' => [
-//                    'searchValue' => $search,
                     'items' => $transactions,
                     'page' => $page,
                     'limit' => $limit,
-//                    'permissions' => $permissions,
                     'tmpl' => $tmpl,
                     'totalItems' => $count,
                 ],

@@ -62,7 +62,10 @@ class LeadUiSubscriber implements EventSubscriberInterface
 
         $event->addTemplate('MauticEcommerceBundle:Contact:tabContent.html.php', [
             'lead' => $lead,
-            'transactions' => $transactions,
+            'items' => $transactions,
+            'totalItems' => $this->transactionRepository->getTransactionsCount($lead),
+            'page' => 1,
+            'limit' => $this->transactionRepository->getTransactionsCount($lead),
         ]);
     }
 }
