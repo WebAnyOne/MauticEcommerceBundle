@@ -3,12 +3,33 @@
 declare(strict_types=1);
 
 use MauticPlugin\MauticEcommerceBundle as Bundle;
+use MauticPlugin\MauticEcommerceBundle\EventListener\LeadUiSubscriber;
 
 return [
     'name' => 'Ecommerce',
     'description' => 'Retrieve data from various ecommerce solutions',
-    'version' => '0.0.1',
+    'version' => '0.0.2',
     'author' => 'elao',
+    'routes' => [
+        'main' => [
+            'mautic_ecommerce_transaction_index' => [
+                'path' => '/ecommerce/transactions/{page}',
+                'controller' => 'MauticEcommerceBundle:Transaction:index',
+            ],
+        ],
+    ],
+    'menu' => [
+        'main' => [
+            'priority' => 75,
+            'items' => [
+                'mautic_ecommerce.menu.transactions' => [
+                    'id' => 'mautic_ecommerce_transaction_index',
+                    'iconClass' => 'fa-euro',
+                    'route' => 'mautic_ecommerce_transaction_index',
+                ],
+            ],
+        ],
+    ],
     'services' => [
         'commands' => [
             'mautic_ecommerce.command.transaction_import' => [
@@ -114,6 +135,13 @@ return [
                     '@translator',
                 ],
             ],
+            'mautic_ecommerce.subscriber.ui.lead' => [
+                'class' => LeadUiSubscriber::class,
+                'tag' => 'kernel.event_subscriber',
+                'arguments' => [
+                    'mautic_ecommerce.repository.transaction',
+                ],
+            ],
         ],
         'repositories' => [
             'mautic_ecommerce.repository.transaction' => [
@@ -139,6 +167,12 @@ return [
                 'arguments' => [
                     '@mautic_ecommerce.repository.transaction',
                 ],
+            ],
+        ],
+        'helpers' => [
+            'mautic_ecommerce.templating.helper.money' => [
+                'class' => Bundle\Templating\Helper\MoneyHelper::class,
+                'alias' => 'ecommerce_money',
             ],
         ],
     ],
