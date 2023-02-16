@@ -1,6 +1,31 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Method MauticPlugin\\\\MauticEcommerceBundle\\\\Controller\\\\TransactionController\\:\\:getTransactionRepository\\(\\) should return MauticPlugin\\\\MauticEcommerceBundle\\\\Entity\\\\TransactionRepository but returns object\\.$#"
+			count: 1
+			path: Controller/TransactionController.php
+
+		-
+			message: "#^Method MauticPlugin\\\\MauticEcommerceBundle\\\\Entity\\\\TransactionRepository\\:\\:getAllTransactions\\(\\) has parameter \\$limit with no type specified\\.$#"
+			count: 1
+			path: Entity/TransactionRepository.php
+
+		-
+			message: "#^Method MauticPlugin\\\\MauticEcommerceBundle\\\\Entity\\\\TransactionRepository\\:\\:getAllTransactions\\(\\) has parameter \\$start with no type specified\\.$#"
+			count: 1
+			path: Entity/TransactionRepository.php
+
+		-
+			message: "#^Method MauticPlugin\\\\MauticEcommerceBundle\\\\Entity\\\\TransactionRepository\\:\\:getTransactions\\(\\) has parameter \\$limit with no type specified\\.$#"
+			count: 1
+			path: Entity/TransactionRepository.php
+
+		-
+			message: "#^Method MauticPlugin\\\\MauticEcommerceBundle\\\\Entity\\\\TransactionRepository\\:\\:getTransactions\\(\\) has parameter \\$page with no type specified\\.$#"
+			count: 1
+			path: Entity/TransactionRepository.php
+
+		-
 			message: "#^Parameter \\#1 \\$content of method MauticPlugin\\\\MauticEcommerceBundle\\\\Email\\\\Parser\\:\\:parse\\(\\) expects string, array given\\.$#"
 			count: 1
 			path: EventListener/EmailSubscriber.php
@@ -19,3 +44,68 @@ parameters:
 			message: "#^Method MauticPlugin\\\\MauticEcommerceBundle\\\\Sync\\\\Mapping\\\\Manual\\\\MappingManualFactory\\:\\:getManual\\(\\) should return Mautic\\\\IntegrationsBundle\\\\Sync\\\\DAO\\\\Mapping\\\\MappingManualDAO but returns Mautic\\\\IntegrationsBundle\\\\Sync\\\\DAO\\\\Mapping\\\\MappingManualDAO\\|null\\.$#"
 			count: 1
 			path: Sync/Mapping/Manual/MappingManualFactory.php
+
+		-
+			message: "#^Method MauticPlugin\\\\MauticEcommerceBundle\\\\Templating\\\\Helper\\\\MoneyHelper\\:\\:format\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: Templating/Helper/MoneyHelper.php
+
+		-
+			message: "#^Variable \\$count might not be defined\\.$#"
+			count: 1
+			path: Views/Contact/tab.html.php
+
+		-
+			message: "#^Variable \\$items might not be defined\\.$#"
+			count: 1
+			path: Views/Contact/tabContent.html.php
+
+		-
+			message: "#^Variable \\$lead might not be defined\\.$#"
+			count: 1
+			path: Views/Contact/tabContent.html.php
+
+		-
+			message: "#^Variable \\$limit might not be defined\\.$#"
+			count: 1
+			path: Views/Contact/tabContent.html.php
+
+		-
+			message: "#^Variable \\$totalItems might not be defined\\.$#"
+			count: 1
+			path: Views/Contact/tabContent.html.php
+
+		-
+			message: "#^Variable \\$view might not be defined\\.$#"
+			count: 1
+			path: Views/Contact/tabContent.html.php
+
+		-
+			message: "#^Variable \\$view might not be defined\\.$#"
+			count: 6
+			path: Views/Transaction/index.html.php
+
+		-
+			message: "#^Variable \\$items might not be defined\\.$#"
+			count: 2
+			path: Views/Transaction/list.html.php
+
+		-
+			message: "#^Variable \\$limit might not be defined\\.$#"
+			count: 1
+			path: Views/Transaction/list.html.php
+
+		-
+			message: "#^Variable \\$page might not be defined\\.$#"
+			count: 1
+			path: Views/Transaction/list.html.php
+
+		-
+			message: "#^Variable \\$totalItems might not be defined\\.$#"
+			count: 1
+			path: Views/Transaction/list.html.php
+
+		-
+			message: "#^Variable \\$view might not be defined\\.$#"
+			count: 13
+			path: Views/Transaction/list.html.php
