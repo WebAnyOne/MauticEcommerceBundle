@@ -16,14 +16,8 @@ jobs:
     name: 'Lint'
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    # Do not run on WIP or Draft PRs
-    if: "!github.event.pull_request || (!contains(github.event.pull_request.labels.*.name, 'WIP') && github.event.pull_request.draft == false)"
-    env:
-      working-directory: .
-    defaults:
-      run:
-        # https://github.community/t/use-working-directory-for-entire-job/16747/9
-        working-directory: ${{ env.working-directory }}
+    # Do not run on Draft PRs
+    if: "!github.event.pull_request || github.event.pull_request.draft == false"
 
     steps:
 
@@ -37,6 +31,7 @@ jobs:
           extensions: "json"
           ini-values: "memory_limit=-1"
           php-version: "7.4"
+          tools: "symfony"
 
       - name: 'Determine composer cache directory'
         id: composer-cache
